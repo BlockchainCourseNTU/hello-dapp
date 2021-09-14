@@ -8,7 +8,7 @@ First, set up your [MetaMask wallet](https://metamask.io/index.html). For more i
 
 Explore inside the intuitive MetaMask wallet, and try to accomplish the following by clicking around:
 
-- Switch to a different network (e.g. switch to Rinkeby testnet).
+- Switch to a different network (e.g. switch to Kovan testnet).
 - Create a new account.
 - Change your account name/alias from "Account X" to something you prefer.
 - Copy paste your public address (e.g. `0x5238...a1CD`).
@@ -25,6 +25,22 @@ Now you are ready to try out the following:
 
 ## Sending and receiving ethers
 
+Unless unlikely events, your wallet and accounts should have 0 ether in balance when you created them.
+
+While you are waiting for faucet to grant you test ethers, a fun question to ponder on: "what are the rare cases where you create a new account to find positive balance?":
+
+<details>
+ <summary>make sure you have an answer yourself before revealing</summary>
+
+- your private key collide with someone else's: there are [~170 million](https://etherscan.io/chart/address) total distinct addresses on Ethereum
+  as of Sept 13, 2021 according to Etherscan, Ethereum's private key is 256 bit long, which gives us 2^256 total possibilities. Your chance of randomly sampled an in-use
+  private key is < 2^(28-256) = 2^(-228). FYI, there are roughly 2^224 atoms in our galaxy. In short, extremely unlikely events.
+- someone accidentally send your address some ethers. (mistype the receiver address)
+- on the topic of receiving money unknowingly, can you force a contract to receive ether even if it doesn't have `receive() external payable {...}` function?
+  The answer is yes, via `selfdestruct`, [read doc here](https://docs.soliditylang.org/en/latest/contracts.html?highlight=selfdestruct#receive-ether-function).
+
+</details>
+
 ## Blockchain explorer: etherscan
 
 ## Play around ERC20 tokens
@@ -39,4 +55,18 @@ available nodes with a rich set of APIs for your applications to interact with t
 
 You can [register here](https://auth.alchemyapi.io/signup), and go through their ['getting started'](https://docs.alchemy.com/alchemy/introduction/getting-started) doc here.
 
-We note that there are alternatives like [Infura](https://infura.io/) that offers similar services, you can use either for your own projects, but we use Alchemy by default in our workshop.
+Give your project whatever name you prefer, try to compartmentalize your backend traffic analytic from that of the front-end by creating separate projects --
+for now, let's just create one to experiment with, "Environment" set to "Development", "Network" selects "Kovan" (you can switch to others later).
+
+Once you have logged in, you should be able to see your dashboard and a task of "Make your first request", we encourage you to view the list of supported methods and
+make requests from your command line as instructed.
+
+<img src="./assets/warmup/alchemy-request.png" alt="alchemy requests" width="600" align="0 auto" />
+
+In case if you are an automation maximalist, and prefer running a script over manually sending 10 requests, try:
+
+- Rename `.env.example` file to `.env`in our project root (don't worry, it's git ignored)
+- Copy paste your own HTTP integration API key into the `.env` file
+- Run [`./scripts/alchemy-requests-example.sh` scripts](./scripts/alchemy-requests-example.sh)
+
+We further note that there are alternatives like [Infura](https://infura.io/) that offers similar services, you can use either for your own projects, but we use Alchemy by default in our workshop.
