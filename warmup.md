@@ -38,7 +38,7 @@ Testnets are identical to mainnet except that:
 - testnets are meant for testing in a simulated, (almost) identical environment as mainnet before developers ship products to live mainnet -- "almost" especially referring to the lack of cryptoeconomic environment (e.g. it's hard to validate staking-based attack vectors or the lack thereof in testnets).
 
 Now switch to a testnet, and web search "xxx testnet faucet" which is the "cash printer" for anyone who wants free "fake ethers".
-In the case of Kovan testnet, enter your receiver address to [this faucet](https://ethdrop.dev/).
+In the case of Kovan testnet, enter your receiver address to [this faucet](https://ethdrop.dev/) or [this gitter chatroom](https://gitter.im/kovan-testnet/faucet).
 Please be noted that all testnets would implements rate limiting (at most request X test ether in Y hours) to prevent DoS attack.
 
 While you are waiting for faucet to grant you test ethers, a fun question to ponder on: "what are the rare cases where you create a new account to find positive balance?":
@@ -84,7 +84,23 @@ Go to the most popular block explorer [etherscan.io](https://etherscan.io/), and
 
 ## Play around ERC20 tokens
 
+Assume that you have some Kovan test ETH in your wallet. Head to [Uniswap](https://app.uniswap.org/#/swap) and swap your ETH with some other ERC20 tokens
+such as [DAI](https://coinmarketcap.com/currencies/multi-collateral-dai/) (algorithmic stable coin), [UNI](https://uniswap.org/blog/uni/) (Uniswap protocol token),
+[USDC](https://www.centre.io/usdc) (custodian, reserve backed stable coin) etc.
+
+<img src="./assets/warmup/uniswap-swap.png" alt="uniswap" width="500" /> <img src="./assets/warmup/sending-dai.png" alt="uniswap" width="400" />
+
+Then try to:
+
+- "Add Token" in your MetaMask wallet so that you can see your ERC20 asset balances.
+- Send your ERC20 token to another address.
+- View your ERC2 related transactions on Etherscan, click on their details.
+
 ## Play around ERC721 tokens
+
+Go to [OpenSea](https://testnets.opensea.io/) and explore around, you can even considering uploading and selling your own NFTs (if you don't mind paying for the high transaction fee).
+
+You could also check out [Dapper Labs'](https://www.dapperlabs.com/#products) products such as NBA Top Shot and Cryptokitties.
 
 ## Setup alchemy
 
