@@ -25,7 +25,21 @@ Now you are ready to try out the following:
 
 ## Sending and receiving ethers
 
-Unless unlikely events, your wallet and accounts should have 0 ether in balance when you created them.
+Unless unlikely events, your wallet and accounts should have 0 ether in balance when you created them. To play round sending Ethers, we need some in our wallet first.
+There are usually two primary ways to get ethers on Ethereum mainnet -- a) via over-the-counter (OTC) trade/purchase where you meet up with a friend whom send some ethers
+to your address upon receiving cash or equivalent in real life; b) via centralized exchanges (CEX) such as [Coinbase](https://coinbase.com), [Binance](https://binance.com), [Gemini](https://www.gemini.com/apac/singapore), etc., where you deposit via bank transfer and CEX would credit you cryptocurrencies of your choice which you can further
+move those assets out to your self-hosted wallet like MetaMask.
+
+For our experimentation purposes, we use "fake ethers" on testnets only.
+Testnets are identical to mainnet except that:
+
+- it's not running expensive decentralized consensus like PoW or PoS, but usually only maintained by a handful of nodes -- known as "Proof of Authority" (PoA) consensus.
+- all money (ethers, tokens) on testnet has no real world value.
+- testnets are meant for testing in a simulated, (almost) identical environment as mainnet before developers ship products to live mainnet -- "almost" especially referring to the lack of cryptoeconomic environment (e.g. it's hard to validate staking-based attack vectors or the lack thereof in testnets).
+
+Now switch to a testnet, and web search "xxx testnet faucet" which is the "cash printer" for anyone who wants free "fake ethers".
+In the case of Kovan testnet, enter your receiver address to [this faucet](https://ethdrop.dev/).
+Please be noted that all testnets would implements rate limiting (at most request X test ether in Y hours) to prevent DoS attack.
 
 While you are waiting for faucet to grant you test ethers, a fun question to ponder on: "what are the rare cases where you create a new account to find positive balance?":
 
@@ -41,7 +55,32 @@ While you are waiting for faucet to grant you test ethers, a fun question to pon
 
 </details>
 
+Let's go back to your wallet and off you go, try to send your friends or another wallet of your own some ethers!
+
+<img src="./assets/warmup/send-ether-details.png" alt="send ether details" width="400" align="0 auto" />
+
+Click on any transaction you've sent, take a look at their details, here are a few noteworthy points:
+
+- **nonce** is a counter keep track of the total number of outgoing transactions you've sent (including failed ones, but excluding receiving ones). This is partially used as a prevention mechanism for _replay attack_ where a malicious node takes a historical transaction you've signed and replay it -- this attack won't work because each transaction you authorize is specific to a unique, incremental nonce.
+- **base fee v.s. priority fee** are concepts introduced in [EIP 1559](https://eips.ethereum.org/EIPS/eip-1559), you only have to know "total fee = base fee + priority fee" and can safely ignore the rest for now. (For inquisitive minds, we recommend reading ["Why 1559" by Tim Beiko](https://hackmd.io/@timbeiko/1559-updates/https%3A%2F%2Fhackmd.io%2F%40timbeiko%2Fwhy-1559))
+- **gwei** is a unit, just like the basic denomination _wei_. As explained [here](https://docs.soliditylang.org/en/latest/units-and-global-variables.html?highlight=gwei#ether-units), 1 gwei= 10^9 wei.
+- Try to calculate the total ether paid for the example transaction above: `1 ether + 21000 * (1.99..93 + 0.00..07) gwei= 1 ether + 21,000 * 2 * 10^9 gwei= 1 + 4.2 * 10 ^ (9-18+4) ether`
+
 ## Blockchain explorer: etherscan
+
+Go to the most popular block explorer [etherscan.io](https://etherscan.io/), and try out the following:
+
+- Find out your address (if you find there's no activity there, it's because you're viewing your address on live mainnet, try switch to [Kovan Explorer](https://kovan.etherscan.io/)) and click into some transactions your accounts are involved with and read their details.
+- Search `vitalik.eth` on mainnet, see how much ethers does one of Vitalik's account has.
+  - `.eth` is [Ethereum Name Service](https://ens.domains/) (ENS) domain registry similar to our ".com" or ".sg" in web2 world.
+  - take a look at Vitalik's token possession (both ERC20 and ERC721).
+- Search `Uniswap` contract, a decentralized exchange (DEX)
+  - Go to the contract address (hint: `0x1f9..984`), read the verified code
+  - Click on any transaction under this DEX, see if you can figure out what this transaction is roughly doing from "Log", "Overview" etc.
+- Search a transaction `0x47f7cff7a5e671884629c93b368cb18f58a993f4b19c2a53a8662e3f1482f690`
+  - this is the infamous Parity "Self-destruct" Hack in 2017 that locked more than 510k ETH, ([postmortem](https://www.parity.io/blog/a-postmortem-on-the-parity-multi-sig-library-self-destruct/), and ["I accidentally killed it" github thread](https://github.com/openethereum/parity-ethereum/issues/6995))
+- Search a block with height `1920000`, although you don't see many transactions in it, this is officially the [DAO fork](https://blog.ethereum.org/2016/07/20/hard-fork-completed/) block.
+- Find out the histogram of Ethereum network hash rate, meanwhile, click around to find more statistics.
 
 ## Play around ERC20 tokens
 
