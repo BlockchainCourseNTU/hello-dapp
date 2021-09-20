@@ -22,6 +22,7 @@ Now you are ready to try out the following:
 - [Play with ERC20 tokens](#play-with-erc20-tokens)
 - [Play with ERC721 tokens](#play-with-erc721-tokens)
 - [Setup alchemy account](#setup-alchemy)
+- [Exploring portfolio dashboards and DEX aggregator](#explore-more)
 
 ## Sending and receiving ethers
 
@@ -149,3 +150,14 @@ In case if you are an automation maximalist, and prefer running a script over ma
 - Run [`./scripts/alchemy-requests-example.sh -n rinkeby`](./scripts/alchemy-requests-example.sh) in your command line
 
 We further note that there are alternatives like [Infura](https://infura.io/) that offers similar services, you can use either for your own projects, but we use Alchemy as the default provider in our workshop.
+
+## Explore more
+
+While you can track all kinds of tokens you own in your wallet, there are more DeFi activities you might participate in including yield farming, liquidity providing, staking, governance voting etc.
+It is useful to manage your portfolio and track your assets under a single umbrella.
+Feel free to explore and check out the following apps:
+
+- [zapper.fi](https://zapper.fi/dashboard) (["What is Zapper"](https://zapper.crunch.help/zapper-fi-faq/what-is-zapper-fi)).
+- [zerion.io](https://app.zerion.io) ([FAQ](https://help.zerion.io/en/), [an example](https://app.zerion.io/0x4862733b5fddfd35f35ea8ccf08f5045e57388b3/overview) of watching a whale's portfolio 🐋).
+- [debank.com](https://debank.com/) ([tutorial](https://medium.com/debank/how-to-play-with-defi-let-debanks-fresh-new-defi-wallet-take-you-dive-into-the-defi-ocean-be7ad904cc4b)).
+- [1inch DEX](https://app.1inch.io/#/1/dao/governance) (A DEX aggregator for best-price execution, read more [here](https://decrypt.co/resources/1inch-dex-aggregator-decentralized-exchanges)).
