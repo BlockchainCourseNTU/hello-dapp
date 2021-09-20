@@ -95,11 +95,36 @@ Then try to:
 - Send your ERC20 token to another address.
 - View your ERC2 related transactions on Etherscan, click on their details.
 
+### More tips on Etherscan
+
+Go to [Uniswap contract on Etherscan](https://etherscan.io/address/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984):
+
+- Under "Transactions" tab, you should see list of transactions directed at this contract, including the method/function invoked, its block height, its sender and receiver, and the amount of Ether transferred along with the transactions.
+  View any of those _completed_ transactions (instead of pending ones), see their "Logs" and "State" changes to get a rough idea of what this transaction does.
+- Under "Erc20 Token Txns" tab, you should see a list of ERC20 transfer to the contracts.
+- Under "Contract" tab, you should be able to read the verified contract.
+  Click on "Read Contract" sub-tab, you can even directly query read-only, gas-free functions inside the contract (learn more about ["transaction v.s. call"](https://ethereum.stackexchange.com/questions/765/what-is-the-difference-between-a-transaction-and-a-call)).
+  Click on "Write Contract", you can send invoke those state-changing functions after connecting your wallet (we don't need to do it as it cost real Ether).
+- Under "Events" tab, you can view all emitted events under the contract address, here's how you could search specific event by either Block number or their topic hash. We emphasize on ways to find out the topic identifiers.
+  - `topic0` is the Event signature -- the keccak256 hash of the event type (with blank spaces removed and input parameter names removed). You can click on the "filter icon" to narrow dow the event logs to only that particular type.
+    ![Emitted event logs](./assets/warmup/event-logs.png)
+  - alternatively, you can go to [this website](https://emn178.github.io/online-tools/keccak_256.html) and paste the Event signature over to get its hash digest, finally prepend the hash value with `0x` and paste it in the search box.
+    <img src="./assets/warmup/event-signature.png" alt="Event signature" width="400" /> <img src="./assets/warmup/search-event.png" alt="Search Event" width="400" />
+
 ## Play with ERC721 tokens
 
 Go to [OpenSea](https://testnets.opensea.io/) and explore around, you can even considering uploading and selling your own NFTs (if you don't mind paying for the high transaction fee).
 
 You could also check out [Dapper Labs'](https://www.dapperlabs.com/#products) products such as NBA Top Shot and Cryptokitties.
+
+### More tips on Etherscan
+
+One of the most popular NFT project is [CryptoPunks](https://www.larvalabs.com/cryptopunks), and you can find the ERC721 Contract on [here](https://etherscan.io/address/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb).
+
+You can find some avid collectors just by inspecting the transactions.
+For example, you can see someone spend 106 ETH on one of those avatars, see the transaction detail [here](https://etherscan.io/tx/0xad6a7e76c562d0c2d5075f1eed6b5afc6c7d1c286d2902773bd78c014701e8ff).
+See if you can find the `punkIndex` of the NFT being bought in this transaction.
+Finally go to OpenSea, search "CryptoPunks", then put the `punkIndex` into the search bar, you should be able to see [this page](https://opensea.io/collection/cryptopunks?collectionSlug=cryptopunks&search[query]=9059&search[sortAscending]=true&search[sortBy]=PRICE) showcasing more details.
 
 ## Setup alchemy
 
