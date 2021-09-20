@@ -1,7 +1,26 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+  echo "Usage: ./alchemy-requests-example.sh -n <main|kovan|rinkeby|ropsten|goerli>" 1>&2; exit 1;
+}
+
 BASEDIR=$(dirname $0) # Project root
+NETWORK="main" #default network choice is mainnet
+
+[ $# -eq 0 ] && usage
+while getopts ":n:" option; do
+  case $option in
+    n)
+      NETWORK=${OPTARG}
+      ;;
+    *)
+      echo "here"
+      usage
+      ;;
+   esac
+done
+echo "Using network: ${NETWORK}."
 
 # import all .env into your environment variables
 if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "FreeBSD" ]; then
@@ -9,6 +28,8 @@ if [ "$(uname)" = "Darwin" ] || [ "$(uname)" = "FreeBSD" ]; then
 elif [ "$(uname)" = "Linux" ]; then
     export $(grep -v '^#' ${BASEDIR}/../.env | xargs -d '\n')
 fi
+
+ALCHEMY_HTTP_TOKEN="https://eth-${NETWORK}.alchemyapi.io/v2/${ALCHEMY_TOKEN}"
 
 # Send 10 different requests
 curl $ALCHEMY_HTTP_TOKEN \

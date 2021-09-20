@@ -8,7 +8,7 @@ First, set up your [MetaMask wallet](https://metamask.io/index.html). For more i
 
 Explore inside the intuitive MetaMask wallet, and try to accomplish the following by clicking around:
 
-- Switch to a different network (e.g. switch to Kovan testnet).
+- Switch to a different network (e.g. switch to Rinkeby testnet).
 - Create a new account.
 - Change your account name/alias from "Account X" to something you prefer.
 - Copy paste your public address (e.g. `0x5238...a1CD`).
@@ -21,7 +21,7 @@ Now you are ready to try out the following:
 - [Exploring blockchain explorer: etherscan](#blockchain-explorer-etherscan)
 - [Play with ERC20 tokens](#play-with-erc20-tokens)
 - [Play with ERC721 tokens](#play-with-erc721-tokens)
-- [setup alchemy account](#setup-alchemy)
+- [Setup alchemy account](#setup-alchemy)
 
 ## Sending and receiving ethers
 
@@ -38,7 +38,7 @@ Testnets are identical to mainnet except that:
 - testnets are meant for testing in a simulated, (almost) identical environment as mainnet before developers ship products to live mainnet -- "almost" especially referring to the lack of cryptoeconomic environment (e.g. it's hard to validate staking-based attack vectors or the lack thereof in testnets).
 
 Now switch to a testnet, and web search "xxx testnet faucet" which is the "cash printer" for anyone who wants free "fake ethers".
-In the case of Kovan testnet, enter your receiver address to [this faucet](https://ethdrop.dev/) or [this gitter chatroom](https://gitter.im/kovan-testnet/faucet).
+In the case of Rinkeby testnet, enter your receiver address to [this faucet](https://faucet.rinkeby.io/).
 Please note that all testnets typically implement rate limiting (at most request X test ether in Y hours) to prevent DoS attack.
 
 While you are waiting for the faucet(s) to grant you test ethers, here's a fun question to ponder on: "What are the rare cases where you create a new account to find positive balance?":
@@ -69,7 +69,7 @@ Click on any transaction you've sent and take a look at its details. Here are a 
 
 Go to the most popular block explorer [etherscan.io](https://etherscan.io/), and try out the following:
 
-- Find your address (if you find there's no activity there, it's because you're viewing your address on live mainnet, try switch to [Kovan Explorer](https://kovan.etherscan.io/)) and click into some transactions your accounts are involved with and read their details.
+- Find your address (if you find there's no activity there, it's because you're viewing your address on live mainnet, try switch to [Rinkeby Explorer](https://rinkeby.etherscan.io/)) and click into some transactions your accounts are involved with and read their details.
 - Search `vitalik.eth` on mainnet, see how much ethers is in one of Vitalik's many accounts.
   - `.eth` is [Ethereum Name Service](https://ens.domains/) (ENS) domain registry similar to our ".com" or ".sg" in web2 world.
   - take a look at Vitalik's token possession (both ERC20 and ERC721).
@@ -83,7 +83,7 @@ Go to the most popular block explorer [etherscan.io](https://etherscan.io/), and
 
 ## Play with ERC20 tokens
 
-Assume that you have some Kovan test ETH in your wallet. Head to [Uniswap](https://app.uniswap.org/#/swap) and swap your ETH with some other ERC20 tokens
+Assume that you have some Rinkeby test ETH in your wallet. Head to [Uniswap](https://app.uniswap.org/#/swap) and swap your ETH with some other ERC20 tokens
 such as [DAI](https://coinmarketcap.com/currencies/multi-collateral-dai/) (algorithmic stable coin), [UNI](https://uniswap.org/blog/uni/) (Uniswap protocol token),
 [USDC](https://www.centre.io/usdc) (custodian, reserve backed stable coin) etc.
 
@@ -110,7 +110,7 @@ available nodes with a rich set of APIs for your applications to interact with t
 You can [register here](https://auth.alchemyapi.io/signup), and go through their ['getting started'](https://docs.alchemy.com/alchemy/introduction/getting-started) doc here.
 
 Give your project whatever name you prefer, and try to compartmentalize your backend traffic analytic from that of the front-end by creating separate projects --
-for now, let's just create one to experiment with, "Environment" set to "Development", "Network" selected as "Kovan" (you can switch to others later).
+for now, let's just create one to experiment with, "Environment" set to "Development", "Network" selected as "Rinkeby" (you can switch to others later).
 
 Once you have logged in, you should be able to see your dashboard and a task of "Make your first request". We encourage you to view the list of supported methods and
 make requests from your command line as instructed.
@@ -121,6 +121,6 @@ In case if you are an automation maximalist, and prefer running a script over ma
 
 - Rename `.env.example` file to `.env`in our project root (don't worry, it's git ignored)
 - Copy paste your own HTTP integration API key into the `.env` file
-- Run [`./scripts/alchemy-requests-example.sh` scripts](./scripts/alchemy-requests-example.sh)
+- Run [`./scripts/alchemy-requests-example.sh -n rinkeby`](./scripts/alchemy-requests-example.sh) in your command line
 
 We further note that there are alternatives like [Infura](https://infura.io/) that offers similar services, you can use either for your own projects, but we use Alchemy as the default provider in our workshop.
