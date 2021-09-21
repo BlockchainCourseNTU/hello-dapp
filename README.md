@@ -5,7 +5,37 @@
 This is a one-stop hands-on tutorial for first-time Ethereum application developers.
 
 - [Warm up](./warmup.md)
+- [Hardhat 101](#hardhat-101)
+- [Smart Contracts Boilerplate](#smart-contracts-boilerplate)
+- [Resources](#resources)
 - [Contributing](#contributing)
+
+## Hardhat 101
+
+In this section, we aim to familiarize you with a powerful and modern development tool [`hardhat`](https://github.com/nomiclabs/hardhat).
+Since we only need the basics to kick-start our own project, going through the ["Getting Started" section ](https://hardhat.org/getting-started/) of the official documentation is strongly recommended.
+
+Make a new folder to play with hardhat basics:
+
+```sh
+# make sure you are in project root
+mkdir -p packages/hardhat-101/ && cd packages/hardhat-101/
+
+# then proceed with hardhat installation: https://hardhat.org/getting-started/#installation
+```
+
+## Smart contracts boilerplate
+
+In this section, we aim to build a boilerplate for all your future Solidity projects by gradually introducing essential hardhat plugins and npm packages that are useful and widely used in the development cycle.
+
+- [Building Smart Contract Project Boilerplate](./boilerplate.md#building-smart-contract-project-boilerplate)
+  - [Prerequisites](./boilerplate.md#prerequisites)
+  - [Hardhat Typescript sample project](./boilerplate.md#hardhat-typescript-sample-project)
+    - [Add TypeScript support](./boilerplate.md#add-typescript-support)
+
+## Resources
+
+- a slightly more complex [solidity-boilerplate](https://github.com/defi-wonderland/solidity-boilerplate) by defi-wonderland
 
 ## Contributing
 
