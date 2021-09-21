@@ -3,6 +3,7 @@
   "scripts": {
     "compile": "yarn hardhat compile",
     "test": "yarn hardhat test",
+    "coverage": "hardhat coverage",
     "lint": "yarn solhint 'contracts/**/*.sol' && yarn prettier --check './**'",
     "lint:fix": "yarn sort-package-json && yarn prettier --write './**' && yarn solhint --fix 'contracts/**/*.sol' 'interfaces/**/*.sol'"
   },
@@ -23,6 +24,7 @@
     "prettier-plugin-solidity": "^1.0.0-beta.18",
     "solhint": "^3.3.6",
     "solhint-plugin-prettier": "^0.0.5",
+    "solidity-coverage": "^0.7.17",
     "sort-package-json": "^1.51.0",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
