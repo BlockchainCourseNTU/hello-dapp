@@ -303,11 +303,58 @@ and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for so
 
 ## Add test coverage
 
+We use [`solidity-coverage` plugin](https://hardhat.org/plugins/solidity-coverage.html) for test coverage report.
+
+1. Install dependency
+   ```sh
+   yarn add -D solidity-coverage
+   ```
+2. Update `hardhat.config.ts`:
+   ```typescript
+   import "solidity-coverage";
+   ```
+3. Add a new script command in `package.json`:
+
+   ```json
+   {
+     "scripts": {
+       "coverage": "hardhat coverage"
+     }
+   }
+   ```
+
+   Then run `yarn coverage`, you should get:
+
+   ```
+   --------------|----------|----------|----------|----------|----------------|
+   File          |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+   --------------|----------|----------|----------|----------|----------------|
+   contracts/    |      100 |      100 |      100 |      100 |                |
+   Greeter.sol   |      100 |      100 |      100 |      100 |                |
+   --------------|----------|----------|----------|----------|----------------|
+   All files     |      100 |      100 |      100 |      100 |                |
+   --------------|----------|----------|----------|----------|----------------|
+   > Istanbul reports written to ./coverage/ and ./coverage.json
+   > ✨ Done in 5.15s.
+
+   ```
+
+4. Finally add coverage related artifacts to your `.gitignore` file
+   ```
+   # Coverage
+   coverage
+   coverage.json
+   ```
+
 ## Add gas reporter
 
 ## Add deployment plugins
 
 ## Add commit lint and git hooks
+
+```
+
+```
 
 ```
 
