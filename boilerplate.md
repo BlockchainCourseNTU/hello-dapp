@@ -141,3 +141,174 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
    ```
 
    Notice "Deploying a Greeter with greeting: Hello, world!" is actually being `console.log` from the contract constructor! This is super nice for debugging purposes, and thanks to `hardhat/console.sol` for enabling this feature.
+
+## Add `OpenZeppelin` dependency
+
+As demonstrated in CryptoZombie's tutorial or most other Solidity tutorials, [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) are a set of community vetted, widely used library.
+
+1. Install these contracts in your dependencies
+   ```sh
+   yarn add @openzeppelin/contracts
+   ```
+2. To verify that we can import the OpenZeppelin library, add the following line to your `contract/Greeter.sol`
+   ```sol
+   import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+   ```
+   Then run `yarn compile`. If it compiled successfully, as it should, then it means you now have `OpenZeppelin` dependency installed.
+
+## Add code formatting and linting
+
+We use [`solhint`](https://github.com/protofire/solhint) for linting Solidity contract code, [`prettier`](https://prettier.io/docs/en/index.html) for formatting TypeScript/Javascript/Solidity code,
+and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for sorting dependencies declaration in alphabetical order.
+
+> If you wondering "linter v.s. Formatter", please [read here](https://prettier.io/docs/en/comparison.html).
+
+1. Add those tools to `devDependencies`
+
+   ```sh
+   yarn add -D solhint prettier sort-package-json solhint-plugin-prettier prettier-plugin-solidity
+   ```
+
+2. Add Solidity linting rules in a new file `.solhint.json`, see explanations for these configs and a complete list [here](https://github.com/protofire/solhint#rules).
+
+   ```json
+   {
+     "extends": "solhint:recommended",
+     "plugins": ["prettier"],
+     "rules": {
+       "prettier/prettier": "error",
+       "compiler-version": ["off"],
+       "constructor-syntax": "warn",
+       "quotes": ["error", "single"],
+       "func-visibility": ["warn", { "ignoreConstructors": true }],
+       "not-rely-on-time": "off",
+       "private-vars-leading-underscore": ["warn", { "strict": false }]
+     }
+   }
+   ```
+
+3. Add format rules in a new file `.prettierrc`, see explanations for these configs and a complete list [here](https://prettier.io/docs/en/options.html).
+
+   ```json
+   {
+     "overrides": [
+       {
+         "files": "**.sol",
+         "options": {
+           "printWidth": 145,
+           "tabWidth": 2,
+           "useTabs": false,
+           "singleQuote": true,
+           "bracketSpacing": false
+         }
+       },
+       {
+         "files": ["**.ts", "**.js"],
+         "options": {
+           "printWidth": 145,
+           "tabWidth": 2,
+           "semi": true,
+           "singleQuote": true,
+           "useTabs": false,
+           "endOfLine": "auto"
+         }
+       },
+       {
+         "files": "**.json",
+         "options": {
+           "tabWidth": 2,
+           "printWidth": 200
+         }
+       }
+     ]
+   }
+   ```
+
+   We further specify a list of files that we don't want format in a new file `.prettierignore`
+
+   ```text
+   # General
+   .prettierignore
+   .solhintignore
+   .husky
+   .gitignore
+   .gitattributes
+   .env.example
+   .env
+   workspace.code-workspace
+   .DS_STORE
+   codechecks.yml
+
+   # Hardhat
+   coverage
+   coverage.json
+   artifacts
+   cache
+   typechained
+   deployments
+
+   # JS
+   node_modules
+   package-lock.json
+   yarn.lock
+
+   # Solidity
+   contracts/mock
+   ```
+
+4. Add the following scripts to `package.json`
+
+   ```json
+   {
+     "scripts": {
+       "lint": "yarn solhint 'contracts/**/*.sol' && yarn prettier --check './**'",
+       "lint:fix": "yarn sort-package-json && yarn prettier --write './**' && yarn solhint --fix 'contracts/**/*.sol'"
+     }
+   }
+   ```
+
+   Now run `yarn lint`, you should see a bunch of error reported and justifications or hints to fix them:
+
+   ```
+   contracts/Greeter.sol
+   4:8   error    Replace "hardhat/console.sol" with 'hardhat/console.sol'                                                            prettier/prettier
+   4:8   error    Use single quotes for string literals                                                                               quotes
+   5:8   error    Replace "@openzeppelin/contracts/utils/math/SafeMath.sol" with '@openzeppelin/contracts/utils/math/SafeMath.sol'    prettier/prettier
+   5:8   error    Use single quotes for string literals                                                                               quotes
+   8:1   error    Delete ··                                                                                                           prettier/prettier
+   8:5   warning  'greeting' should start with _                                                                                      private-vars-leading-underscore
+   10:1   error    Delete ··                                                                                                           prettier/prettier
+   11:5   error    Replace ····console.log("Deploying·a·Greeter·with·greeting:" with console.log('Deploying·a·Greeter·with·greeting:'  prettier/prettier
+   11:21  error    Use single quotes for string literals                                                                               quotes
+   12:1   error    Replace ········ with ····                                                                                          prettier/prettier
+   13:3   error    Delete ··                                                                                                           prettier/prettier
+   15:1   error    Delete ··                                                                                                           prettier/prettier
+   16:5   error    Delete ····                                                                                                         prettier/prettier
+   17:3   error    Delete ··                                                                                                           prettier/prettier
+   19:1   error    Replace ···· with ··                                                                                                prettier/prettier
+   20:1   error    Delete ····                                                                                                         prettier/prettier
+   20:21  error    Use single quotes for string literals                                                                               quotes
+   21:1   error    Replace ········ with ····                                                                                          prettier/prettier
+   22:1   error    Delete ··                                                                                                           prettier/prettier
+
+    ✖ 19 problems (18 errors, 1 warning)
+   ```
+
+   A quick way to fix is running `yarn lint:fix`.
+
+   After which you might still see some warning and errors that our linters can't make decisions on how to fix them.
+   Go to `contract/Greeter.sol`, change line 8 to `string public greeting;`, change line 20 to `console.log('Changing greeting from', greeting, 'to', _greeting);`.
+
+   Now run `yarn lint` again, there should be no errors left.
+
+## Add test coverage
+
+## Add gas reporter
+
+## Add deployment plugins
+
+## Add commit lint and git hooks
+
+```
+
+```
