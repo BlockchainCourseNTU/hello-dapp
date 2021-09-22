@@ -151,9 +151,12 @@ As demonstrated in CryptoZombie's tutorial or most other Solidity tutorials, [Op
    yarn add @openzeppelin/contracts
    ```
 2. To verify that we can import the OpenZeppelin library, add the following line to your `contract/Greeter.sol`
+
    ```sol
    import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
    ```
+
    Then run `yarn compile`. If it compiled successfully, as it should, then it means you now have `OpenZeppelin` dependency installed.
 
 ## Add code formatting and linting
@@ -437,3 +440,85 @@ In step 5 below, we further use [`dotenv`](https://www.npmjs.com/package/dotenv)
 ## Add deployment plugins
 
 ## Add commit lint and git hooks
+
+To enforce standardized, conventional commit messages, we use [`commitlint`](https://github.com/conventional-changelog/commitlint).
+We recommend skimming through ["benefits of commitlint"](https://github.com/conventional-changelog/commitlint#benefits-using-commitlint) first if you haven't used it before.
+Apparently, you should read the [conventional rules](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional) that your future commit messages should adhere to.
+
+To lint our commit message upon each `git commit`, we need to create [git hooks](https://git-scm.com/docs/githooks), for that we use [`husky`](https://github.com/typicode/husky).
+For avid explorers, you can read this [blog post](https://blog.typicode.com/husky-git-hooks-javascript-config/) to understand some design decisions of `husky`.
+
+⚠ If you're running from the cloned `hello-dapp` repo, then you can skip this section as `commitlint` and `husky` hooks had been configured already.
+Else if you are building a contract package in your own monorepo, then you should add `husky` in root `package.json` instead.
+
+Choose one of the two depending on your project setup:
+
+- [Contract boilerplate as its separate repo](#contract-boilerplate-as-its-separate-repo)
+- [Contract boilerplate as one of the packages in a monorepo](#contract-boilerplate-as-one-of-the-packages-in-a-monorepo)
+
+### Contract boilerplate as its separate repo
+
+1. Install dependencies
+   ```sh
+   # Install commitlint cli and conventional config
+   yarn add -D @commitlint/config-conventional @commitlint/cli husky
+   ```
+2. Configure `commitlint` to use conventional config
+   ```sh
+   echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
+   ```
+   Activate/initialize `husky` (one-time):
+   ```sh
+   npx husky-init && yarn
+   ```
+   And you should be able to see a `.husky/pre-commit` file created for you.
+3. First modify `.husky/pre-commit` file to run linting instead:
+
+   ```
+    #!/bin/sh
+    . "$(dirname "$0")/_/husky.sh"
+
+    yarn lint:fix
+   ```
+
+   Then add a new hook to ensure proper commit message:
+
+   ```sh
+   # ensure proper commit messages
+   npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
+   ```
+
+### Contract boilerplate as one of the packages in a monorepo
+
+⚠ Again, if you're running from the cloned `hello-dapp` repo, then you can skip this section as `commitlint` and `husky` hooks had been configured already.
+
+1. Go back to Monorepo project root, then run
+
+   ```sh
+   yarn add -D @commitlint/config-conventional @commitlint/cli husky
+   echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
+
+   # enable Git hooks
+   yarn husky install
+
+   # ensure correct format and linting before commit
+   yarn husky add .husky/pre-commit 'yarn lint:fix'
+   git add .husky/pre-commit
+
+   # ensure proper commit messages
+   yarn husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
+   git add .husky/commit-msg
+   ```
+
+   Add the following lines to `package.json` in monorepo's root:
+
+   ```json
+   {
+     "scripts": {
+       "lint": "yarn lerna run lint",
+       "lint:fix": "yarn lerna run lint:fix"
+     }
+   }
+   ```
+
+   Done. Go ahead and try commit with some bad error message such as `foo blah did something`, the hooks should prevent you from committing. 🛡️
