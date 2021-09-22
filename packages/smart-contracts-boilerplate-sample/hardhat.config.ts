@@ -1,6 +1,9 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { task, HardhatUserConfig } from 'hardhat/config';
 import '@nomiclabs/hardhat-waffle';
 import 'solidity-coverage';
+import 'hardhat-gas-reporter';
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -25,6 +28,13 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+  },
+  gasReporter: {
+    currency: 'USD',
+    coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+    enabled: process.env.REPORT_GAS ? true : false,
+    showMethodSig: true,
+    onlyCalledMethods: false,
   },
 };
 
