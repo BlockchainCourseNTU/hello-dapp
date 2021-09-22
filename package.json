@@ -1,7 +1,20 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/smart-contracts-boilerplate-sample"
+    ]
+  },
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "husky": "^7.0.0",
     "lerna": "^4.0.0"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "yarn lerna run lint",
+    "lint:fix": "yarn lerna run lint:fix"
   }
 }
