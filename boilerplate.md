@@ -1,6 +1,6 @@
 # Building Smart Contract Project Boilerplate
 
-⚠ *make sure you already read through [Hardhat 101](#hardhat-101) before moving on.*️
+⚠ make sure you already read through [Hardhat 101](README.md#hardhat-101) before moving on.️
 
 > 💡 note on folder structure: we use [monorepo](https://en.wikipedia.org/wiki/Monorepo) to manages our smart contract and front end code. Concretely, we use [`lerna`](https://lerna.js.org/) which by default
 > keeps all codebases under `./packages/` folder.
@@ -36,6 +36,8 @@ npx hardhat # then choose the basic sample project
 The following steps are almost verbatim from the [official doc](https://hardhat.org/guides/typescript.html) except we use `yarn` as our package manager.
 
 1. Remove `package-lock.json` and use `yarn` instead. You should be able to see a `yarn.lock` file being generated.
+
+   ⚠ you are only removing `package-lock.json`, NOT `package.json`. Your `yarn` still replies on `package.json` to install all dependencies and other tasks.
 
    ```sh
    rm package-lock.json
