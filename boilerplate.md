@@ -348,14 +348,92 @@ We use [`solidity-coverage` plugin](https://hardhat.org/plugins/solidity-coverag
 
 ## Add gas reporter
 
+We use [`hardhat-gas-reporter` plugin](https://hardhat.org/plugins/hardhat-gas-reporter.html) for gas consumption report.
+
+Normally we don't want to see gas reports on every test run, therefore we only enable it with an environment variable `REPORT_GAS`.
+To set temporary env variable only in the context of a command, we use [`cross-env`](https://www.npmjs.com/package/cross-env).
+
+In step 5 below, we further use [`dotenv`](https://www.npmjs.com/package/dotenv) to get secret/local variables from `.env` file.
+
+1. Install dependencies
+   ```sh
+   yarn add -D hardhat-gas-reporter cross-env dotenv
+   ```
+2. Add configuration to your `hardhat.config.ts`, see the list of [configuration options](https://hardhat.org/plugins/hardhat-gas-reporter.html#options).
+
+   ```typescript
+   import "hardhat-gas-reporter";
+   const config: HardhatUserConfig = {
+     // ...
+     gasReporter: {
+       currency: "USD",
+       enabled: process.env.REPORT_GAS ? true : false,
+       showMethodSig: true,
+       onlyCalledMethods: false,
+     },
+   };
+   ```
+
+3. Add a new script command to `package.json`
+
+   ```json
+   {
+     "scripts": {
+       "gas": "cross-env REPORT_GAS=1 yarn hardhat test"
+     }
+   }
+   ```
+
+4. Run `yarn gas` to get a gas report from our tests run.
+
+5. Optionally, if you want to get an actual market price, we integrate with [CoinMarketCap's API](https://coinmarketcap.com/api/pricing/) (Free tier is more than enough for personal use).
+
+   Copy the [`.env.example`] file and paste it into your own `.env` file, fill in your CoinMarketCap API key:
+
+   ```
+   COINMARKETCAP_API_KEY=xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxx
+   ```
+
+   Jump back to `hardhat.config.ts`, add the following extra configuration:
+
+   ```typescript
+   import * as dotenv from "dotenv";
+   dotenv.config();
+
+   const config: HardhatUserConfig = {
+     // ...
+     gasReporter: {
+       // ...
+       coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+     },
+   };
+   ```
+
+   Run `yarn gas` again, and you shall see the USD cost.
+
+   ```
+   ·------------------------------------|---------------------------|-------------|-----------------------------·
+   |        Solc version: 0.8.0         ·  Optimizer enabled: true  ·  Runs: 200  ·  Block limit: 30000000 gas  │
+   ·····································|···························|·············|······························
+   |  Methods                           ·               74 gwei/gas               ·       2868.09 usd/eth       │
+   ·············|·······················|·············|·············|·············|···············|··············
+   |  Contract  ·  Method               ·  Min        ·  Max        ·  Avg        ·  # calls      ·  usd (avg)  │
+   ·············|·······················|·············|·············|·············|···············|··············
+   |  Greeter   ·  greet()              ·          -  ·          -  ·          -  ·            0  ·          -  │
+   ·············|·······················|·············|·············|·············|···············|··············
+   |  Greeter   ·  greeting()           ·          -  ·          -  ·          -  ·            0  ·          -  │
+   ·············|·······················|·············|·············|·············|···············|··············
+   |  Greeter   ·  setGreeting(string)  ·          -  ·          -  ·      34658  ·            2  ·       7.36  │
+   ·············|·······················|·············|·············|·············|···············|··············
+   |  Deployments                       ·                                         ·  % of limit   ·             │
+   ·····································|·············|·············|·············|···············|··············
+   |  Greeter                           ·          -  ·          -  ·     422738  ·        1.4 %  ·      89.72  │
+   ·------------------------------------|-------------|-------------|-------------|---------------|-------------·
+
+   ```
+
+   > Be aware of [a bug](https://github.com/cgewecke/eth-gas-reporter/issues/254) from upstream in `hardhat-gas-report`, if you don't see the price reporting, it's most likely due to this bug.
+
 ## Add deployment plugins
 
 ## Add commit lint and git hooks
-
-```
-
-```
-
-```
-
-```
