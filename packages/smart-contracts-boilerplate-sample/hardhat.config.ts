@@ -16,18 +16,28 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
 });
 
 const config: HardhatUserConfig = {
+  defaultNetwork: 'hardhat',
+  paths: {
+    sources: './contracts',
+    tests: './test',
+    artifacts: './build/artifacts',
+    cache: './build/cache',
+  },
   solidity: {
     compilers: [
       {
         version: '0.8.0',
         settings: {
           optimizer: {
-            enabled: true,
+            enabled: false, // TODO: process.env.TEST
             runs: 200,
           },
         },
       },
     ],
+  },
+  mocha: {
+    timeout: 20000,
   },
   gasReporter: {
     currency: 'USD',

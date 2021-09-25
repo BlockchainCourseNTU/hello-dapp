@@ -57,7 +57,8 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
    mv hardhat.config.js hardhat.config.ts
    ```
 
-   and update the file
+   and update the file, please refer to the [doc here](https://hardhat.org/config/#available-config-options),
+   if you don't understand some of the configurations specified below.
 
    ```typescript
    import { task, HardhatUserConfig } from "hardhat/config";
@@ -71,6 +72,13 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
    });
 
    const config: HardhatUserConfig = {
+     defaultNetwork: "hardhat",
+     paths: {
+       sources: "./contracts",
+       tests: "./test",
+       artifacts: "./build/artifacts",
+       cache: "./build/cache",
+     },
      solidity: {
        compilers: [
          {
@@ -83,6 +91,9 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
            },
          },
        ],
+     },
+     mocha: {
+       timeout: 20000,
      },
    };
 
@@ -247,10 +258,9 @@ and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for so
    # Hardhat
    coverage
    coverage.json
-   artifacts
-   cache
-   typechained
+   build
    deployments
+   dist
 
    # JS
    node_modules
@@ -439,8 +449,6 @@ In step 5 below, we further use [`dotenv`](https://www.npmjs.com/package/dotenv)
 
    > Be aware of [a bug](https://github.com/cgewecke/eth-gas-reporter/issues/254) from upstream in `hardhat-gas-report`, if you don't see the price reporting, it's most likely due to this bug.
 
-## Add deployment plugins
-
 ## Add commit lint and git hooks
 
 To enforce standardized, conventional commit messages, we use [`commitlint`](https://github.com/conventional-changelog/commitlint).
@@ -524,3 +532,7 @@ Choose one of the two depending on your project setup:
    ```
 
    Done. Go ahead and try commit with some bad error message such as `foo blah did something`, the hooks should prevent you from committing. 🛡️
+
+## Add `TypeChain` plugin
+
+## Add deployment plugins
