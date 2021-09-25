@@ -6,7 +6,10 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "dist",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@typechained": ["typechained/index"]
+    }
   },
   "include": ["./scripts", "./test"],
   "files": ["./hardhat.config.ts"]
