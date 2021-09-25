@@ -4,6 +4,8 @@ import { task, HardhatUserConfig } from 'hardhat/config';
 import '@nomiclabs/hardhat-waffle';
 import 'solidity-coverage';
 import 'hardhat-gas-reporter';
+import '@typechain/hardhat';
+import '@nomiclabs/hardhat-ethers';
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -45,6 +47,10 @@ const config: HardhatUserConfig = {
     enabled: process.env.REPORT_GAS ? true : false,
     showMethodSig: true,
     onlyCalledMethods: false,
+  },
+  typechain: {
+    outDir: 'typechained',
+    target: 'ethers-v5',
   },
 };
 
