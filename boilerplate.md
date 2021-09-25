@@ -102,21 +102,21 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
 
 4. Add a [`tsconfig.json`](./packages/smart-contracts-boilerplate-sample/tsconfig.json) file, (learn more about what it does [here](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html))
 
-```json
-{
-  "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "outDir": "dist",
-    "baseUrl": "."
-  },
-  "include": ["./scripts", "./test"],
-  "files": ["./hardhat.config.ts"]
-}
-```
+   ```json
+   {
+     "compilerOptions": {
+       "target": "es2019",
+       "module": "commonjs",
+       "strict": true,
+       "esModuleInterop": true,
+       "resolveJsonModule": true,
+       "outDir": "dist",
+       "baseUrl": "."
+     },
+     "include": ["./scripts", "./test"],
+     "files": ["./hardhat.config.ts"]
+   }
+   ```
 
 5. For convenience, introduce the following scripts in `package.json`:
 
@@ -536,3 +536,22 @@ Choose one of the two depending on your project setup:
 ## Add `TypeChain` plugin
 
 ## Add deployment plugins
+
+## Troubleshooting
+
+#### `yarn add` failed inside a workspace/package
+
+If you are using monorepo like `lerna` and `yarn workspaces`, then make sure:
+
+1. specified in `lerna.json` in your monorepo root, something like:
+
+   ```json
+   {
+     "npmClient": "yarn",
+     "useWorkspaces": true,
+     "packages": ["packages/*"],
+     "version": "independent"
+   }
+   ```
+
+2. in all of your `packages/*/package.json`, you have specified a `version` field
