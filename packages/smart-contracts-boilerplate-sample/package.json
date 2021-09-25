@@ -1,12 +1,14 @@
 {
   "name": "hardhat-project",
+  "version": "0.0.1",
+  "license": "MIT",
   "scripts": {
     "compile": "yarn hardhat compile",
-    "test": "yarn hardhat test",
     "coverage": "yarn hardhat coverage",
     "gas": "cross-env REPORT_GAS=1 yarn test",
     "lint": "yarn solhint 'contracts/**/*.sol' && yarn prettier --check './**'",
-    "lint:fix": "yarn sort-package-json && yarn prettier --write './**' && yarn solhint --fix 'contracts/**/*.sol' 'interfaces/**/*.sol'"
+    "lint:fix": "yarn sort-package-json && yarn prettier --write './**' && yarn solhint --fix 'contracts/**/*.sol' 'interfaces/**/*.sol'",
+    "test": "yarn hardhat test"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.2"
