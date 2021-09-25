@@ -13,10 +13,10 @@ codechecks.yml
 # Hardhat
 coverage
 coverage.json
-artifacts
-cache
+build
 typechained
 deployments
+dist
 
 # JS
 node_modules
