@@ -141,7 +141,7 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
    {
      "scripts": {
        "compile": "yarn hardhat compile",
-       "test": "yarn hardhat test"
+       "test": "yarn compile && yarn hardhat test"
      }
    }
    ```
@@ -774,7 +774,7 @@ Now you are ready for deploying to live [test|main] networks under your MetaMask
 1. We will need to use our Alchemy hosted endpoints for live testnet access, and use wallet mnemonic (the master secret seed) to derive and sign our deployment transactions.
    If you haven't set up Alchemy, please refer to [warm up](./warmup.md#setup-alchemy).
 
-   First, create a new file at your `utils/network.ts` and copy [this file](./utils/network.ts) over.
+   First, create a new file at your `utils/network.ts` and copy [this file](./packages/smart-contracts-boilerplate-sample/utils/network.ts) over.
 
    Update your `hardhat.config.ts` to use alchemy endpoints for `rinkeby` testnet, and use your own mnemonic (i.e. your MetaMask wallet) to send transactions:
 
