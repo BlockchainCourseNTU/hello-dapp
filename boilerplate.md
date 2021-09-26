@@ -18,7 +18,7 @@
 - [Add `TypeChain` plugin](#add-typechain-plugin)
 - [Add deployment plugins](#add-deployment-plugins)
   - [deploying to localhost and test against deployed contracts](#deploying-to-localhost-and-test-against-deployed-contracts)
-  - [deploying to live testnet](#deploying-to-live-testnet)
+  - [deploying to live testnet or mainnet](#deploying-to-live-testnet-or-mainnet)
 - [Troubleshooting](#troubleshooting)
   - [`yarn add` failed inside a workspace/package](#yarn-add-failed-inside-a-workspacepackage)
 
@@ -759,9 +759,66 @@ Also when lost, try to find [template/example deployment setups here](https://gi
 5. Finally, let's try to test against our deployed contract.
    Copy [`test-local-deployed-greeter.ts`](./packages/smart-contracts-boilerplate-sample/scripts/test-local-deployed-greeter.ts) to your `scripts/test-local-deployed-greeter.ts`.
 
-   Run `yarn hardhat run ./scripts/test-local-deployed-greeter.ts --network localhost`. You should see our `assert((await greeter.greet()) === 'Bonjour localhost!')` passed! If you want, you can also try `console.log(greeterDeployment.address)` which would print the same address shown in the last step.
+   Run
 
-### deploying to live testnet
+   ```sh
+   yarn hardhat run ./scripts/test-local-deployed-greeter.ts --network localhost
+   ```
+
+   You should see our `assert((await greeter.greet()) === 'Bonjour localhost!')` passed! If you want, you can also try `console.log(greeterDeployment.address)` which would print the same address shown in the last step.
+
+### deploying to live testnet or mainnet
+
+Now you are ready for deploying to live [test|main] networks under your MetaMask accounts.
+
+1. We will need to use our Alchemy hosted endpoints for live testnet access, and use wallet mnemonic (the master secret seed) to derive and sign our deployment transactions.
+   If you haven't set up Alchemy, please refer to [warm up](./warmup.md#setup-alchemy).
+
+   First, create a new file at your `utils/network.ts` and copy [this file](./utils/network.ts) over.
+
+   Update your `hardhat.config.ts` to use alchemy endpoints for `rinkeby` testnet, and use your own mnemonic (i.e. your MetaMask wallet) to send transactions:
+
+   ```typescript
+   import { nodeUrl, accounts } from "./utils/network";
+   const config: HardhatUserConfig = {
+     networks: {
+       hardhat: {
+         chainId: 1337, // temporary for MetaMask support: https://github.com/MetaMask/metamask-extension/issues/10290
+       },
+       localhost: {
+         url: nodeUrl("localhost"),
+       },
+       rinkeby: {
+         url: nodeUrl("rinkeby"),
+         accounts: accounts("rinkeby"),
+       },
+       // can configure other networks, see examples:
+       // https://github.com/wighawag/template-ethereum-contracts/blob/main/hardhat.config.ts
+     },
+   };
+   ```
+
+2. Run
+   ```sh
+   cp .env.example .env
+   ```
+   Edit your `.env` file by filling your API tokens and wallet mnemonic.
+3. Run
+
+   ```sh
+   yarn deploy --network rinkeby
+   ```
+
+   You should see (be patient, this might take some time):
+
+   ```
+   deploying "Greeter" (tx: 0x41ef031e20b772de6b43a820e1ffdfc80b3d7fbdb978a75d13dee7a1b554f237)...: deployed at 0xD4deB045fb89E750864a7349087A6674C1E79F78 with 542664 gas
+   ✨  Done in 71.73s.
+   ```
+
+   You should be able to see your transactions and deployed contracts on Etherscan. For example I have switched my MetaMask to my second account, then ran the deploy command to `rinkeby`, you can find my transaction [here](https://rinkeby.etherscan.io/tx/0x41ef031e20b772de6b43a820e1ffdfc80b3d7fbdb978a75d13dee7a1b554f237).
+
+💡 The best practice is you version control (git commit) your `deployments/` artifacts for discovery, reference and consistency during migrations.
 
 ## Troubleshooting
 

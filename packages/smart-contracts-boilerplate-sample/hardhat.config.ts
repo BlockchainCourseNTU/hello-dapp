@@ -7,6 +7,7 @@ import 'hardhat-gas-reporter';
 import '@typechain/hardhat';
 import '@nomiclabs/hardhat-ethers';
 import 'hardhat-deploy';
+import { nodeUrl, accounts } from './utils/network';
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -58,6 +59,15 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337, // temporary for MetaMask support: https://github.com/MetaMask/metamask-extension/issues/10290
     },
+    localhost: {
+      url: nodeUrl('localhost'),
+    },
+    rinkeby: {
+      url: nodeUrl('rinkeby'),
+      accounts: accounts('rinkeby'),
+    },
+    // can configure other networks, see examples:
+    // https://github.com/wighawag/template-ethereum-contracts/blob/main/hardhat.config.ts
   },
   namedAccounts: {
     deployer: {
