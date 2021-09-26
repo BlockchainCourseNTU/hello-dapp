@@ -17,6 +17,8 @@
   - [Contract boilerplate as one of the packages in a monorepo](#contract-boilerplate-as-one-of-the-packages-in-a-monorepo)
 - [Add `TypeChain` plugin](#add-typechain-plugin)
 - [Add deployment plugins](#add-deployment-plugins)
+  - [deploying to localhost and test against deployed contracts](#deploying-to-localhost-and-test-against-deployed-contracts)
+  - [deploying to live testnet](#deploying-to-live-testnet)
 - [Troubleshooting](#troubleshooting)
   - [`yarn add` failed inside a workspace/package](#yarn-add-failed-inside-a-workspacepackage)
 
@@ -643,6 +645,123 @@ While `TypeChain` works with many other frameworks, we will be using its `Hardha
    Note: without the customized path declaration in the last step, you can still import types via relative path `import { Greeter } from '../typechaind/index';` -- but it is (arguably) not as nice as our import style which treats `@typechaind` as just another package.
 
 ## Add deployment plugins
+
+Now with smart contracts written and locally tested, it's time for live testnet/mainnet deployments, for which we use [`hardhat-deploy` plugin](https://github.com/wighawag/hardhat-deploy/tree/master).
+
+💡 tips: most steps below offer only minimum clarifications, you are strongly recommended to read the `README` of the `hardhat-deploy` repo for more under-the-hood explanations and other available setup options for more complicated deployment flows.
+Also when lost, try to find [template/example deployment setups here](https://github.com/wighawag/template-ethereum-contracts).
+
+### deploying to localhost and test against deployed contracts
+
+1. Install dependencies
+
+   ```sh
+   yarn add -D hardhat-deploy
+   ```
+
+2. Update `hardhat.config.ts`
+
+   ```typescript
+   import "hardhat-deploy";
+   const config: HardhatUserConfig = {
+     // ...
+     networks: {
+       hardhat: {
+         chainId: 1337, // temporary for MetaMask support: https://github.com/MetaMask/metamask-extension/issues/10290
+       },
+     },
+     paths: {
+       // ...
+       deploy: "./scripts/deploy",
+     },
+     namedAccounts: {
+       deployer: {
+         default: 0, // by default, take the first account as deployer
+         rinkeby: "0x5238A644636946963ffeDAc52Ec53fb489D3a1CD", // on rinkeby, use a specific account
+       },
+     },
+   };
+   ```
+
+   - To use `scripts/deploy/` as the folder for all deployment scripts (personal preference, you can also go with default path which is `deploy/`, [see doc here](https://github.com/wighawag/hardhat-deploy/tree/master#3-extra-hardhatconfig-paths-options)),
+   - The default `chainId` of `hardhat` network and `localhost` network are `31337`, but we can change it to something else (as long as not colliding with others). Specifically, due to [a MetaMask compatibility issue](https://github.com/MetaMask/metamask-extension/issues/10290), we change it `1337`.
+   - The differences between `hardhat` and `localhost` is roughly: the latter is a separate, long-running process where changes made to it can be persistent locally across scripts and invocations; whereas the former is usually an ephemeral session (e.g. when you run fresh tests) that would shut down once scripts are done running (changes to the network are not persistent).
+   - We "named" the first account as the `deployer`, (to get the full list of accounts hardhat generated for you, run `yarn hardhat accounts` task). When pushing to testnet or main net, we usually use one of our accounts in our MetaMask wallet with safer, protected private key.
+
+3. Create a new deployment script `./scripts/deploy/001-Greeter.deploy.ts`:
+
+   ```typescript
+   import { HardhatRuntimeEnvironment } from "hardhat/types";
+   import { DeployFunction } from "hardhat-deploy/types";
+
+   export const INITIAL_GREET: { [chainId: string]: string } = {
+     "1337": "Bonjour localhost!",
+     "4": "Guten tag, Rinkeby!",
+   };
+
+   const deployFunc: DeployFunction = async (
+     hre: HardhatRuntimeEnvironment
+   ) => {
+     const { deployer } = await hre.getNamedAccounts();
+     const chainId = await hre.getChainId();
+
+     await hre.deployments.deploy("Greeter", {
+       from: deployer,
+       args: [INITIAL_GREET[chainId]],
+       log: true,
+     });
+   };
+   deployFunc.tags = ["Greeter"];
+
+   export default deployFunc;
+   ```
+
+   Note on the filename: as [documented here](https://github.com/wighawag/hardhat-deploy/tree/master#the-deploy-task), when you later run `yarn deploy --network <NETWORK>`, hardhat will "scan for files in alphabetical order and execute them in turn".
+   If your deployment workflow is straightforwardly in a sequential order, then naming your deployment scripts using `xxx-<contract/purpose>.deploy.ts` where `xxx` dictates the order, would be sufficient.
+   However, if your deployment workflow is more complicated with library linking or inter-dependencies or even conditional deployments, then you should check out [`DeployFunction`'s `skip`, `dependencies`, and `runAtTheEnd` fields here](https://github.com/wighawag/hardhat-deploy/tree/master#deploy-scripts) as well as
+   [library linking](https://github.com/wighawag/hardhat-deploy/tree/master#handling-contract-using-libraries) config.
+
+   Then add this to your `package.json` for slightly shorthanded commands:
+
+   ```json
+   {
+     "scripts": {
+       "deploy": "yarn hardhat deploy"
+     }
+   }
+   ```
+
+4. Now, first start a local node in a new terminal window: `yarn hardhat node`, you should see `Started HTTP and WebSocket JSON-RPC server at http://127.0.0.1:8545/`.
+
+   Jump to another terminal session, run `yarn deploy --network localhost`, you should see our `Greeter.sol` successfully deployed.
+
+   ```
+   web3_clientVersion
+   Contract deployment: Greeter
+   Contract address:    0x5fbdb2315678afecb367f032d93f642f64180aa3
+   Transaction:         0xf87999b7500e0ded42ddd10982e458c7fbcc054fd82fcaad893f45c2ecc037b8
+   From:                0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+   Value:               0 ETH
+   Gas used:            542532 of 542532
+   Block #1:            0x13b50db64e9e7120d870078b9b41f802c908161145cf1cf92e9ce32e35d80fd2
+
+   eth_chainId
+   eth_accounts (2)
+   eth_chainId (2)
+   eth_getTransactionByHash
+   eth_blockNumber
+   eth_chainId
+   ```
+
+   - Just for experimentation, you can try to run the same deployment script again, you will see `hardhat` by default won't create a duplicated contract `reusing "Greeter" at 0x5FbDB2315678afecb367f032d93F642f64180aa3` -- this is a clear indication that our changes made to our local blockchain are persistent.
+   - You should a new folder `deployemnts/` generated, go ahead and explore what's inside.
+
+5. Finally, let's try to test against our deployed contract.
+   Copy [`test-local-deployed-greeter.ts`](./packages/smart-contracts-boilerplate-sample/scripts/test-local-deployed-greeter.ts) to your `scripts/test-local-deployed-greeter.ts`.
+
+   Run `yarn hardhat run ./scripts/test-local-deployed-greeter.ts --network localhost`. You should see our `assert((await greeter.greet()) === 'Bonjour localhost!')` passed! If you want, you can also try `console.log(greeterDeployment.address)` which would print the same address shown in the last step.
+
+### deploying to live testnet
 
 ## Troubleshooting
 

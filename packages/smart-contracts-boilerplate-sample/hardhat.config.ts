@@ -6,6 +6,7 @@ import 'solidity-coverage';
 import 'hardhat-gas-reporter';
 import '@typechain/hardhat';
 import '@nomiclabs/hardhat-ethers';
+import 'hardhat-deploy';
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -24,6 +25,7 @@ const config: HardhatUserConfig = {
     tests: './test',
     artifacts: './build/artifacts',
     cache: './build/cache',
+    deploy: './scripts/deploy',
   },
   solidity: {
     compilers: [
@@ -51,6 +53,17 @@ const config: HardhatUserConfig = {
   typechain: {
     outDir: 'typechained',
     target: 'ethers-v5',
+  },
+  networks: {
+    hardhat: {
+      chainId: 1337, // temporary for MetaMask support: https://github.com/MetaMask/metamask-extension/issues/10290
+    },
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0, // by default, take the first account as deployer
+      rinkeby: '0x5238A644636946963ffeDAc52Ec53fb489D3a1CD', // on rinkeby, use a specific account
+    },
   },
 };
 

@@ -5,6 +5,7 @@
   "scripts": {
     "compile": "yarn hardhat compile",
     "coverage": "yarn hardhat coverage",
+    "deploy": "yarn hardhat deploy",
     "gas": "cross-env REPORT_GAS=1 yarn test",
     "lint": "yarn solhint 'contracts/**/*.sol' && yarn prettier --check './**'",
     "lint:fix": "yarn sort-package-json && yarn prettier --write './**' && yarn solhint --fix 'contracts/**/*.sol' 'interfaces/**/*.sol'",
@@ -29,6 +30,7 @@
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.7",
     "hardhat": "^2.6.4",
+    "hardhat-deploy": "^0.9.1",
     "hardhat-gas-reporter": "^1.0.4",
     "husky": "^7.0.0",
     "prettier": "^2.4.1",
