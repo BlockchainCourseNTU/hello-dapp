@@ -28,7 +28,7 @@ Now you are ready to try out the following:
 
 Your wallet and accounts will very likely have 0 ether in balance when you create them. To play round sending Ethers, we need some in our wallet first.
 There are usually two primary ways to get ethers on Ethereum mainnet -- a) via over-the-counter (OTC) trade/purchase where you meet up with a friend whom send some ethers
-to your address upon receiving cash or equivalent in real life; b) via centralized exchanges (CEX) such as [Coinbase](https://coinbase.com), [Binance SG](https://binance.sg), [Gemini](https://www.gemini.com/apac/singapore), etc., where you deposit SGD / USD via bank transfer, exchange it for cryptocurrencies of your choice which you can then
+to your address upon receiving cash or equivalent in real life; b) via centralized exchanges (CEX) such as [Coinbase](https://www.coinbase.com), [Binance SG](https://binance.sg), [Gemini](https://www.gemini.com/apac/singapore), etc., where you deposit SGD / USD via bank transfer, exchange it for cryptocurrencies of your choice which you can then
 move out to your wallet.
 
 For experimentation purposes, we use "fake ethers" on testnets only.
