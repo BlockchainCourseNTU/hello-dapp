@@ -11,6 +11,7 @@
   "scripts": {
     "postinstall": "husky install",
     "lint": "yarn lerna run lint",
-    "lint:fix": "yarn lerna run lint:fix"
+    "lint:fix": "yarn lerna run lint:fix",
+    "test": "yarn lerna run test"
   }
 }

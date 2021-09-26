@@ -141,7 +141,7 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
    {
      "scripts": {
        "compile": "yarn hardhat compile",
-       "test": "yarn hardhat test"
+       "test": "yarn compile && yarn hardhat test"
      }
    }
    ```

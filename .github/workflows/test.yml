@@ -36,4 +36,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Run unit tests
+        env:
+          ALCHEMY_TOKEN: ${{ secrets.ALCHEMY_TOKEN }}
+          CI: true
         run: yarn test
