@@ -7,6 +7,7 @@ import 'hardhat-gas-reporter';
 import '@typechain/hardhat';
 import '@nomiclabs/hardhat-ethers';
 import 'hardhat-deploy';
+import 'hardhat-contract-sizer';
 import { nodeUrl, accounts } from './utils/network';
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -74,6 +75,12 @@ const config: HardhatUserConfig = {
       default: 0, // by default, take the first account as deployer
       rinkeby: '0x5238A644636946963ffeDAc52Ec53fb489D3a1CD', // on rinkeby, use a specific account
     },
+  },
+  contractSizer: {
+    alphaSort: true,
+    disambiguatePaths: false,
+    runOnCompile: true,
+    strict: true,
   },
 };
 
