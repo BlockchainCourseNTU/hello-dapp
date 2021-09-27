@@ -3,7 +3,7 @@
     {
       "files": "**.sol",
       "options": {
-        "printWidth": 145,
+        "printWidth": 99,
         "tabWidth": 2,
         "useTabs": false,
         "singleQuote": true,
@@ -25,7 +25,7 @@
       "files": "**.json",
       "options": {
         "tabWidth": 2,
-        "printWidth": 200
+        "printWidth": 145
       }
     }
   ]
