@@ -12,6 +12,7 @@
 - [Add code formatting and linting](#add-code-formatting-and-linting)
 - [Add test coverage](#add-test-coverage)
 - [Add gas reporter](#add-gas-reporter)
+- [Add contract sizer](#add-contract-sizer)
 - [Add commit lint and git hooks](#add-commit-lint-and-git-hooks)
   - [Contract boilerplate as its separate repo](#contract-boilerplate-as-its-separate-repo)
   - [Contract boilerplate as one of the packages in a monorepo](#contract-boilerplate-as-one-of-the-packages-in-a-monorepo)
@@ -220,7 +221,7 @@ and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for so
    }
    ```
 
-3. Add format rules in a new file `.prettierrc`, see explanations for these configs and a complete list [here](https://prettier.io/docs/en/options.html). The *.sol rules adhere to the [solididty style guide](https://docs.soliditylang.org/en/latest/style-guide.html).
+3. Add format rules in a new file `.prettierrc`, see explanations for these configs and a complete list [here](https://prettier.io/docs/en/options.html). The \*.sol rules adhere to the [solididty style guide](https://docs.soliditylang.org/en/latest/style-guide.html).
 
    ```json
    {
@@ -479,11 +480,11 @@ In step 5 below, we further use [`dotenv`](https://www.npmjs.com/package/dotenv)
    const config: HardhatUserConfig = {
      // ...
      contractSizer: {
-      alphaSort: true,
-      disambiguatePaths: false,
-      runOnCompile: true,
-      strict: true,
-    }
+       alphaSort: true,
+       disambiguatePaths: false,
+       runOnCompile: true,
+       strict: true,
+     },
    };
    ```
 

@@ -36,6 +36,7 @@ In this section, we aim to build a boilerplate for all your future Solidity proj
   - [Add code formatting and linting](./boilerplate.md#add-code-formatting-and-linting)
   - [Add test coverage](./boilerplate.md#add-test-coverage)
   - [Add gas reporter](./boilerplate.md#add-gas-reporter)
+  - [Add contract sizer](./boilerplate.md#add-contract-sizer)
   - [Add commit lint and git hooks](./boilerplate.md#add-commit-lint-and-git-hooks)
   - [Add `TypeChain` support](./boilerplate.md#add-typechain-plugin)
   - [Add deployment plugins](./boilerplate.md#add-deployment-plugins)
