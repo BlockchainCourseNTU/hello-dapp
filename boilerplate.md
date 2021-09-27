@@ -2,7 +2,7 @@
 
 ⚠ make sure you already read through [Hardhat 101](README.md#hardhat-101) before moving on.️
 
-> 💡 note on folder structure: we use [monorepo](https://en.wikipedia.org/wiki/Monorepo) to manages our smart contract and front end code. Concretely, we use [`lerna`](https://lerna.js.org/) which by default
+> 💡 note on folder structure: we use [monorepo](https://en.wikipedia.org/wiki/Monorepo) to manages our smart contract and front-end code. Concretely, we use [`lerna`](https://lerna.js.org/) which by default
 > keeps all codebases under `./packages/` folder.
 
 - [Prerequisites](#prerequisites)
@@ -32,11 +32,11 @@ Check the following installation:
 Learn the following languages:
 
 - `Solidity`
-  - The most recommended tutorial is [CryptoZombie](https://cryptozombies.io/) at least Curriculum 1~4.
-  - Or read official [Solidity doc](https://docs.soliditylang.org/en/latest/index.html) for more details.
+  - The most recommended tutorial is [CryptoZombies](https://cryptozombies.io/), at least Curriculum 1~4.
+  - Or read the official [Solidity doc](https://docs.soliditylang.org/en/latest/index.html) for more details.
 - `TypeScript`
-  - If you never wrote any TypeScript before, we strongly recommend [the "TypeScript Handbook"](https://www.typescriptlang.org/docs/handbook/intro.html).
-  - Regardless of whether you come from an OOP language like Java or C#, or a functional language like Haskell or ML, or a hybrid language like Go, Rust or Scala, you should take a look at their ["Getting started"](https://www.typescriptlang.org/docs/handbook/intro.html#get-started)
+  - If you've never wrote any TypeScript before, we strongly recommend [the "TypeScript Handbook"](https://www.typescriptlang.org/docs/handbook/intro.html).
+  - Regardless of whether you come from an OOP language like Java or C#, or a functional language like Haskell or ML, or a hybrid language like Go, Rust or Scala, you should take a look at their ["Getting started section"](https://www.typescriptlang.org/docs/handbook/intro.html#get-started).
   - Main reasons for our nudging to `TypeScript` over `JavaScript` is its dominant popularity and superior protection against many common JS caveats via its type systems. (see [StackOverflow's 2021 survey](https://insights.stackoverflow.com/survey/2021#technology-most-loved-dreaded-and-wanted), or [state of JS](https://2020.stateofjs.com/en-US/technologies/javascript-flavors/#javascript_flavors_experience_ranking) for yourself)
 
 ## Hardhat Typescript sample project
@@ -65,7 +65,7 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
 2. Install the following `npm` packages:
 
    ```sh
-   yarn add -D ts-node typescript chai @types/node @types/mocha @types/chai
+   yarn add --dev ts-node typescript chai @types/node @types/mocha @types/chai
    ```
 
 3. Rename `hardhat.config.js` to `hardhat.config.ts`
@@ -174,7 +174,7 @@ The following steps are almost verbatim from the [official doc](https://hardhat.
 
 ## Add `OpenZeppelin` dependency
 
-As demonstrated in CryptoZombie's tutorial or most other Solidity tutorials, [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) are a set of community vetted, widely used library.
+As demonstrated in CryptoZombies' tutorial or most other Solidity tutorials, [OpenZeppelin contracts](https://github.com/OpenZeppelin/openzeppelin-contracts) are a set of community vetted, widely used library.
 
 1. Install these contracts in your dependencies
    ```sh
@@ -199,7 +199,7 @@ and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for so
 1. Add those tools to `devDependencies`
 
    ```sh
-   yarn add -D solhint prettier sort-package-json solhint-plugin-prettier prettier-plugin-solidity
+   yarn add --dev solhint prettier sort-package-json solhint-plugin-prettier prettier-plugin-solidity
    ```
 
 2. Add Solidity linting rules in a new file `.solhint.json`, see explanations for these configs and a complete list [here](https://github.com/protofire/solhint#rules).
@@ -220,7 +220,7 @@ and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for so
    }
    ```
 
-3. Add format rules in a new file `.prettierrc`, see explanations for these configs and a complete list [here](https://prettier.io/docs/en/options.html).
+3. Add format rules in a new file `.prettierrc`, see explanations for these configs and a complete list [here](https://prettier.io/docs/en/options.html). The *.sol rules adhere to the [solididty style guide](https://docs.soliditylang.org/en/latest/style-guide.html).
 
    ```json
    {
@@ -228,7 +228,7 @@ and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for so
        {
          "files": "**.sol",
          "options": {
-           "printWidth": 145,
+           "printWidth": 99,
            "tabWidth": 2,
            "useTabs": false,
            "singleQuote": true,
@@ -339,7 +339,7 @@ We use [`solidity-coverage` plugin](https://hardhat.org/plugins/solidity-coverag
 
 1. Install dependency
    ```sh
-   yarn add -D solidity-coverage
+   yarn add --dev solidity-coverage
    ```
 2. Update `hardhat.config.ts`:
    ```typescript
@@ -389,7 +389,7 @@ In step 5 below, we further use [`dotenv`](https://www.npmjs.com/package/dotenv)
 
 1. Install dependencies
    ```sh
-   yarn add -D hardhat-gas-reporter cross-env dotenv
+   yarn add --dev hardhat-gas-reporter cross-env dotenv
    ```
 2. Add configuration to your `hardhat.config.ts`, see the list of [configuration options](https://hardhat.org/plugins/hardhat-gas-reporter.html#options).
 
@@ -466,6 +466,39 @@ In step 5 below, we further use [`dotenv`](https://www.npmjs.com/package/dotenv)
 
    > Be aware of [a bug](https://github.com/cgewecke/eth-gas-reporter/issues/254) from upstream in `hardhat-gas-report`, if you don't see the price reporting, it's most likely due to this bug.
 
+## Add contract sizer
+
+1. Install dependencies
+   ```sh
+   yarn add --dev hardhat-contract-sizer
+   ```
+2. Add configuration to your `hardhat.config.ts`, see the list of [configuration options](https://hardhat.org/plugins/hardhat-gas-reporter.html#options).
+
+   ```typescript
+   import "hardhat-contract-sizer";
+   const config: HardhatUserConfig = {
+     // ...
+     contractSizer: {
+      alphaSort: true,
+      disambiguatePaths: false,
+      runOnCompile: true,
+      strict: true,
+    }
+   };
+   ```
+
+3. Add a new script command to `package.json`
+
+   ```json
+   {
+     "scripts": {
+       "size": "yarn hardhat size-contracts"
+     }
+   }
+   ```
+
+4. Run `yarn size` to get the contract size report for our compiled contract. Alternatively, you should also see thereport when you do `yarn compile`.
+
 ## Add commit lint and git hooks
 
 To enforce standardized, conventional commit messages, we use [`commitlint`](https://github.com/conventional-changelog/commitlint).
@@ -488,7 +521,7 @@ Choose one of the two depending on your project setup:
 1. Install dependencies
    ```sh
    # Install commitlint cli and conventional config
-   yarn add -D @commitlint/config-conventional @commitlint/cli husky
+   yarn add --dev @commitlint/config-conventional @commitlint/cli husky
    ```
 2. Configure `commitlint` to use conventional config
    ```sh
@@ -522,7 +555,7 @@ Choose one of the two depending on your project setup:
 1. Go back to Monorepo project root, then run
 
    ```sh
-   yarn add -D @commitlint/config-conventional @commitlint/cli husky
+   yarn add --dev @commitlint/config-conventional @commitlint/cli husky
    echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
 
    # enable Git hooks
@@ -565,7 +598,7 @@ While `TypeChain` works with many other frameworks, we will be using its `Hardha
 1. Install dependencies, (we use `waffle+ethers.js` stack)
 
    ```sh
-   yarn add -D typechain @typechain/hardhat @typechain/ethers-v5
+   yarn add --dev typechain @typechain/hardhat @typechain/ethers-v5
    ```
 
 2. Ensure you have the following imports in `hardhat.config.ts`:
@@ -656,7 +689,7 @@ Also when lost, try to find [template/example deployment setups here](https://gi
 1. Install dependencies
 
    ```sh
-   yarn add -D hardhat-deploy
+   yarn add --dev hardhat-deploy
    ```
 
 2. Update `hardhat.config.ts`

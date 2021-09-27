@@ -35,7 +35,7 @@ For experimentation purposes, we use "fake ethers" on testnets only.
 Testnets are identical to mainnet except that:
 
 - it's not running expensive decentralized consensus like PoW or PoS, but usually only maintained by a handful of nodes -- known as "Proof of Authority" (PoA) consensus.
-- all money (ethers, tokens) on testnet has no real world value.
+- all money (ethers, tokens) on testnet have no real world value.
 - testnets are meant for testing in a simulated, (almost) identical environment as mainnet before developers ship products to live mainnet -- "almost" especially referring to the lack of cryptoeconomic environment (e.g. it's hard to validate staking-based attack vectors or the lack thereof in testnets).
 
 Now switch to a testnet, and web search "xxx testnet faucet" which is the "cash printer" for anyone who wants free "fake ethers".
@@ -145,7 +145,7 @@ make requests from your command line as instructed.
 
 In case if you are an automation maximalist, and prefer running a script over manually sending 10 requests, try the following:
 
-- Rename `.env.example` file to `.env`in our project root (don't worry, it's git ignored)
+- Rename `.env.example` file to `.env` in our project root (don't worry, it's git ignored)
 - Copy paste your own HTTP integration API key into the `.env` file
 - Run [`./scripts/alchemy-requests-example.sh -n rinkeby`](./scripts/alchemy-requests-example.sh) in your command line
 
