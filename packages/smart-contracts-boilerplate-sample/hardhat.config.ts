@@ -8,6 +8,7 @@ import '@typechain/hardhat';
 import '@nomiclabs/hardhat-ethers';
 import 'hardhat-deploy';
 import 'hardhat-contract-sizer';
+import { removeConsoleLog } from 'hardhat-preprocessor';
 import { nodeUrl, accounts } from './utils/network';
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -81,6 +82,9 @@ const config: HardhatUserConfig = {
     disambiguatePaths: false,
     runOnCompile: true,
     strict: true,
+  },
+  preprocess: {
+    eachLine: removeConsoleLog((hre) => hre.network.name !== 'hardhat' && hre.network.name !== 'localhost'),
   },
 };
 

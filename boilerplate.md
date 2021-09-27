@@ -12,6 +12,7 @@
 - [Add code formatting and linting](#add-code-formatting-and-linting)
 - [Add test coverage](#add-test-coverage)
 - [Add gas reporter](#add-gas-reporter)
+- [Add contract sizer](#add-contract-sizer)
 - [Add commit lint and git hooks](#add-commit-lint-and-git-hooks)
   - [Contract boilerplate as its separate repo](#contract-boilerplate-as-its-separate-repo)
   - [Contract boilerplate as one of the packages in a monorepo](#contract-boilerplate-as-one-of-the-packages-in-a-monorepo)
@@ -220,7 +221,7 @@ and [`sort-package-json`](https://github.com/keithamus/sort-package-json) for so
    }
    ```
 
-3. Add format rules in a new file `.prettierrc`, see explanations for these configs and a complete list [here](https://prettier.io/docs/en/options.html). The *.sol rules adhere to the [solididty style guide](https://docs.soliditylang.org/en/latest/style-guide.html).
+3. Add format rules in a new file `.prettierrc`, see explanations for these configs and a complete list [here](https://prettier.io/docs/en/options.html). The \*.sol rules adhere to the [solididty style guide](https://docs.soliditylang.org/en/latest/style-guide.html).
 
    ```json
    {
@@ -479,11 +480,11 @@ In step 5 below, we further use [`dotenv`](https://www.npmjs.com/package/dotenv)
    const config: HardhatUserConfig = {
      // ...
      contractSizer: {
-      alphaSort: true,
-      disambiguatePaths: false,
-      runOnCompile: true,
-      strict: true,
-    }
+       alphaSort: true,
+       disambiguatePaths: false,
+       runOnCompile: true,
+       strict: true,
+     },
    };
    ```
 
@@ -681,8 +682,36 @@ While `TypeChain` works with many other frameworks, we will be using its `Hardha
 
 Now with smart contracts written and locally tested, it's time for live testnet/mainnet deployments, for which we use [`hardhat-deploy` plugin](https://github.com/wighawag/hardhat-deploy/tree/master).
 
-💡 tips: most steps below offer only minimum clarifications, you are strongly recommended to read the `README` of the `hardhat-deploy` repo for more under-the-hood explanations and other available setup options for more complicated deployment flows.
-Also when lost, try to find [template/example deployment setups here](https://github.com/wighawag/template-ethereum-contracts).
+Before deploying, we would like to remove debug-related harness such as `console.sol` -- for which we use [`hardhat-preprocessor`](https://hardhat.org/plugins/hardhat-preprocessor.html).
+
+1. Install the plugin:
+
+   ```sh
+   yarn add --dev hardhat-preprocessor
+   ```
+
+   Add the following to your `hardhat.config.ts`:
+
+   ```typescript
+   import { removeConsoleLog } from "hardhat-preprocessor";
+
+   const config: HardhatUserConfig = {
+     // ...
+     preprocess: {
+       eachLine: removeConsoleLog(
+         (hre) =>
+           hre.network.name !== "hardhat" && hre.network.name !== "localhost"
+       ),
+     },
+   };
+   ```
+
+   The configuration above, as [explained here](https://hardhat.org/plugins/hardhat-preprocessor.html#configuration), remove any `console.log()` in your contract when connecting to live networks.
+
+   Now back to deployments.
+
+   💡 tips: most steps below offer only minimum clarifications, you are strongly recommended to read the `README` of the `hardhat-deploy` repo for more under-the-hood explanations and other available setup options for more complicated deployment flows.
+   Also when lost, try to find [template/example deployment setups here](https://github.com/wighawag/template-ethereum-contracts).
 
 ### deploying to localhost and test against deployed contracts
 
