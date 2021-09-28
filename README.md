@@ -1,5 +1,7 @@
 # "Hello dApp!" Development Workshop
 
+[![Test](https://github.com/BlockchainCourseNTU/hello-dapp/actions/workflows/test.yml/badge.svg)](https://github.com/BlockchainCourseNTU/hello-dapp/actions/workflows/test.yml)
+
 > MVP (Minimal Viable Preparation) for dApp developers.
 
 This is a one-stop hands-on tutorial for first-time Ethereum application developers.
@@ -28,7 +30,7 @@ mkdir -p packages/hardhat-101/ && cd packages/hardhat-101/
 
 In this section, we aim to build a boilerplate for all your future Solidity projects by gradually introducing essential hardhat plugins and npm packages that are useful and widely used in the development cycle.
 
-- [Building Smart Contract Project Boilerplate](./boilerplate.md#building-smart-contract-project-boilerplate)
+- [Building Smart Contract Project Boilerplate (Part 1)](./boilerplate.md#building-smart-contract-project-boilerplate-part-1)
   - [Prerequisites](./boilerplate.md#prerequisites)
   - [Hardhat Typescript sample project](./boilerplate.md#hardhat-typescript-sample-project)
     - [Add TypeScript support](./boilerplate.md#add-typescript-support)
@@ -40,6 +42,9 @@ In this section, we aim to build a boilerplate for all your future Solidity proj
   - [Add commit lint and git hooks](./boilerplate.md#add-commit-lint-and-git-hooks)
   - [Add `TypeChain` support](./boilerplate.md#add-typechain-plugin)
   - [Add deployment plugins](./boilerplate.md#add-deployment-plugins)
+- [Building Smart Contract Project Boilerplate (Part 2)](./boilerplate-part2.md#building-smart-contract-project-boilerplate-part-2)
+  - [Testing with `waffle`](./boilerplate-part2.md#testing-with-waffle)
+  - [Mocking with `smock`](./boilerplate-part2.md#mocking-with-smock)
 
 ## Resources
 

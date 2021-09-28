@@ -1,34 +1,63 @@
-import { expect } from 'chai';
-import { ethers } from 'hardhat';
-import { Greeter, Greeter__factory } from '@typechained';
+import chai, { expect } from 'chai';
+import { ethers, waffle } from 'hardhat';
+import { Greeter } from '@typechained';
+const { solidity } = waffle;
+import GreeterABI from '../build/artifacts/contracts/Greeter.sol/Greeter.json';
 
-describe('Greeter', function () {
+chai.use(solidity);
+
+describe('Greeter', () => {
   let greeter: Greeter;
-  let greeterFactory: Greeter__factory;
+  // this is the same list as `ethers.getSigners()`
+  let [_, bob] = waffle.provider.getWallets();
+  const initGreeting = 'Hello, world!';
+
+  const fixture = async () => {
+    return (await waffle.deployContract(bob, GreeterABI, [initGreeting])) as Greeter;
+  };
 
   beforeEach(async () => {
-    greeterFactory = (await ethers.getContractFactory('Greeter')) as Greeter__factory;
-    greeter = await greeterFactory.deploy('Hello, world!');
+    greeter = await waffle.loadFixture(fixture);
   });
 
-  it("Should return the new greeting once it's changed", async function () {
-    await greeter.deployed();
+  it('Initalize with correct default greeting', async () => {
+    expect(await greeter.greet()).to.equal(initGreeting);
+  });
 
-    expect(await greeter.greet()).to.equal('Hello, world!');
+  describe('#setGreeting', () => {
+    const newGreeting = 'Bonjour!';
 
-    const setGreetingTx = await greeter.setGreeting('Hola, mundo!');
+    it('should revert with insufficent donation', async () => {
+      // this will send from alice (or first wallet) by default
+      await expect(
+        greeter.setGreeting(newGreeting, {
+          value: ethers.utils.parseEther('0.9'),
+        })
+      ).to.be.reverted;
+    });
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    it('should update the greeting with sufficient donation', async () => {
+      const donationInWei = ethers.utils.parseEther('2');
+      // reconnect contract with a different signer before calling if you want to send from a different wallet.
+      await expect(
+        greeter.connect(bob).setGreeting(newGreeting, {
+          value: donationInWei,
+        })
+      )
+        // the following line is temporarily broken after London hardfork
+        // .to.changeEtherBalances(greeter, [bob, greeter], [-donationInWei, donationInWei])
+        .to.emit(greeter, 'GreetingUpdated')
+        .withArgs(newGreeting, bob.address, donationInWei);
 
-    expect(await greeter.greet()).to.equal('Hola, mundo!');
+      expect(await greeter.greet()).to.equal(newGreeting);
+    });
   });
 });
 
 // Wait so the reporter has time to fetch and return prices from APIs.
 // https://github.com/cgewecke/eth-gas-reporter/issues/254
-describe('eth-gas-reporter workaround', () => {
-  it('should kill time', (done) => {
-    setTimeout(done, 2000);
-  });
-});
+// describe('eth-gas-reporter workaround', () => {
+//   it('should kill time', (done) => {
+//     setTimeout(done, 2000);
+//   });
+// });

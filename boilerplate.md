@@ -1,4 +1,4 @@
-# Building Smart Contract Project Boilerplate
+# Building Smart Contract Project Boilerplate (Part 1)
 
 ⚠ make sure you already read through [Hardhat 101](README.md#hardhat-101) before moving on.️
 
