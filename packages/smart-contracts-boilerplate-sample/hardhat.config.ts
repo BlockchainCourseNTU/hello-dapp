@@ -42,6 +42,13 @@ const config: HardhatUserConfig = {
         },
       },
     ],
+    settings: {
+      outputSelection: {
+        '*': {
+          '*': ['stroageLayout'],
+        },
+      },
+    },
   },
   mocha: {
     timeout: 20000,

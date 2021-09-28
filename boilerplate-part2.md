@@ -139,3 +139,62 @@ Now, let's dive deeper into the test file.
 🎉 Now you have basics of waffle testing under your belt!
 
 ## Mocking with `smock`
+
+[`smock`](https://github.com/defi-wonderland/smock) is the Solidity Mocking library -- a hardhat plugin to help you write mock-based testing.
+(you can read [here](https://stackoverflow.com/questions/2665812/what-is-mocking#2666006) and [here](https://stackoverflow.com/questions/3622455/what-is-the-purpose-of-mock-objects) on "mocking" in general)
+
+TODO: WIP on the tutorial
+
+1. Install dependencies
+
+   ```sh
+   yarn add --dev @defi-wonderland/smock
+   ```
+
+   update your `hardhat.config.ts`:
+
+   ```typescript
+   const config: HardhatUserConfig = {
+     // ... other config
+     solidity: {
+       settings: {
+         outputSelection: {
+           "*": {
+             "*": ["stroageLayout"],
+           },
+         },
+       },
+     },
+   };
+   ```
+
+   Add the following
+
+   ```solidity
+   // ...
+   import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+   contract Greeter {
+     // ...
+     address public WHOAddress = address(0x12345678901234567890);
+     ERC20 private dai;
+
+     // ...
+
+     // extremely dangerous setter, anyone can call. demo purposes only.
+     function setDaiAddress(address daiAddr) external {
+       dai = ERC20(daiAddr);
+     }
+
+     // donate 10 DAI to WHO to change the greeting
+     function setGreetingWithDai(string memory _greeting) external {
+       require(
+         dai.allowance(msg.sender, address(this)) >= 10,
+         "Should approve at least 10 DAI first"
+       );
+       greeting = _greeting;
+       dai.transferFrom(msg.sender, WHOAddress, 10);
+     }
+   }
+
+   ```
