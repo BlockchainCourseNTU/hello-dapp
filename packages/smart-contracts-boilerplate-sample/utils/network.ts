@@ -28,7 +28,9 @@ export const accounts = (network: NetworkOptions): HardhatNetworkAccountsUserCon
     case 'localhost':
       throw Error("Use hardhat's accounts from hre.ethers.getSigners() instead!");
     default:
-      const walletMnemonic = process.env.CI ? 'test test test test test test test test test test test junk' : process.env.MNEMONIC;
+      const walletMnemonic = process.env.CI
+        ? 'test test test test test test test test test test test junk'
+        : process.env.MNEMONIC;
       if (walletMnemonic === '' || typeof walletMnemonic === 'undefined') {
         throw Error('Please declare your MNEMONIC in your .env');
       }

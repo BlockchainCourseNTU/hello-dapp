@@ -9,6 +9,11 @@ we would strongly recommend you to utilize these tools because they would accele
 
 👍 We know these new tools and setups can be overwhelming, just so you know, you are already doing a great job! Keep up the effort and you are on your way to become a powerful smart contract developers!
 
+- [Testing with `waffle`](#testing-with-waffle)
+- [Mocking with `smock`](#mocking-with-smock)
+- [Special testing: Moving in time](#special-testing-moving-in-time)
+- [Special testing: Mainnet Forking](#special-testing-mainnet-forking)
+
 ## Testing with `waffle`
 
 [`waffle`](https://ethereum-waffle.readthedocs.io/en/latest/index.html) is a testing library for smart contracts.
@@ -139,3 +144,147 @@ Now, let's dive deeper into the test file.
 🎉 Now you have basics of waffle testing under your belt!
 
 ## Mocking with `smock`
+
+## Special testing: Moving in time
+
+Suppose you built a blind auction contract with a "commit" phase and a "reveal" phase, each elapse for certain period of time (measured in block number).
+It's a common testing requirement to simulate fast-forwarding to a future timestamp and check contract states.
+
+While you can manually call `ethers.network.provider.request({ method: 'evm_mine' })` or `evm_setNextBlockTimestamp`, we curate a list of utility functions to help you navigate in "time".
+
+Please check out [`test/utils/evm.ts`](./packages/smart-contracts-boilerplate-sample/test/utils/evm.ts), and the following helper functions:
+
+```typescript
+export declare const getBlockNumber: () => Promise<number>;
+export declare const advanceTimeAndBlock: (time: number) => Promise<void>;
+export declare const advanceToTimeAndBlock: (time: number) => Promise<void>;
+export declare const advanceTime: (time: number) => Promise<void>;
+export declare const advanceToTime: (time: number) => Promise<void>;
+export declare const advanceBlock: () => Promise<void>;
+export declare const reset: (hre: HardhatRuntimeEnvironment) => Promise<void>;
+declare class SnapshotManager {
+  snapshots: {
+    [id: string]: string;
+  };
+  take(): Promise<string>;
+  revert(id: string): Promise<void>;
+  private takeSnapshot;
+  private revertSnapshot;
+}
+export declare const snapshot: SnapshotManager;
+```
+
+## Special testing: Mainnet Forking
+
+One of the attractive features of `hardhat` is its support for ["mainnet forking"](https://hardhat.org/hardhat-network/guides/mainnet-forking.html).
+
+> You can start an instance of Hardhat Network that forks mainnet. This means that it will simulate having the same state as mainnet, but it will work as a local development network. That way you can interact with deployed protocols and test complex interactions locally.
+
+The toy example, we try to sync with the state of DAI stable coin contract on the mainnet, and simulate a transfer from `vitalik.eth` to a stranger account.
+Note `vitalik.eth`'s DAI balance is accurately synced, and yet our simulated transfer didn't happen in actual history -- thus the name "forking".
+
+1. Specify in `hardhat.config.ts`:
+
+   ```typescript
+   const config: HardhatUserConfig = {
+     networks: {
+       //..
+       hardhat: {
+         //...
+         forking: {
+           url: nodeUrl("mainnet"),
+           blockNumber: 13000000, // (Aug-10-2021 09:53:39 PM +UTC) post London fork
+         },
+       },
+     },
+   };
+   ```
+
+2. To get the TypeChain artifacts of DAI contract, we create a dummy `contract/Dai.sol`:
+
+   ```solidity
+   // SPDX-License-Identifier: MIT
+   pragma solidity ^0.8.0;
+   import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+   contract DaiMock is ERC20("Dai Stablecoin", "DAI") {}
+
+   ```
+
+   We further copy paste the entire [`test/utils/` folder](./packages/smart-contracts-boilerplate-sample/test/utils) to your project.
+
+   Then we write our `test/dai.test.ts`, the test is quite self-explanatory:
+
+   ```typescript
+   import hre, { ethers, waffle } from "hardhat";
+   import { expect } from "chai";
+   import { IERC20 } from "@typechained";
+   import { evm, wallet } from "./utils/index";
+   import { BigNumber, Signer } from "ethers";
+
+   // vitalik.eth: https://etherscan.io/address/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+   const vitalik = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+   // Dai address on mainnet: https://etherscan.io/address/0x6b175474e89094c44da98b954eedeac495271d0f
+   const daiAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+
+   describe("DAI Mainnet Forking", () => {
+     let dai: IERC20;
+     const [alice] = waffle.provider.getWallets();
+     let daiVitalik: Signer;
+     let snapshotId: string;
+
+     before(async () => {
+       await evm.reset(hre);
+       dai = (await ethers.getContractAt("IERC20", daiAddress)) as IERC20;
+       daiVitalik = (await wallet.impersonate(vitalik)) as Signer;
+       snapshotId = await evm.snapshot.take();
+     });
+
+     beforeEach(async () => {
+       await evm.snapshot.revert(snapshotId);
+     });
+
+     describe("#transfer", () => {
+       describe("with insufficient balance", () => {
+         it("should revert", async () => {
+           await expect(
+             dai
+               .connect(alice)
+               .transfer(
+                 wallet.generateRandomAddress(),
+                 ethers.utils.parseEther("1")
+               )
+           ).to.be.revertedWith("Dai/insufficient-balance");
+         });
+       });
+
+       describe("with sufficient balance", () => {
+         let initSenderBalance: BigNumber;
+         let initReceiverBalance: BigNumber;
+         const amount = ethers.utils.parseEther("2");
+
+         beforeEach(async () => {
+           initSenderBalance = await dai.balanceOf(
+             await daiVitalik.getAddress()
+           );
+           initReceiverBalance = await dai.balanceOf(alice.address);
+           await dai.connect(daiVitalik).transfer(alice.address, amount);
+         });
+
+         it("sender balance should be deduced correctly", async () => {
+           expect(
+             await dai.balanceOf(await daiVitalik.getAddress())
+           ).to.be.equal(initSenderBalance.sub(amount));
+         });
+
+         it("receiver balance should increase correctly", async () => {
+           expect(await dai.balanceOf(alice.address)).to.be.equal(
+             initReceiverBalance.add(amount)
+           );
+         });
+       });
+     });
+   });
+   ```
+
+3. Finally run `yarn test` (do make sure that your `.env` has your `ALCHEMY_TOKEN` specified)

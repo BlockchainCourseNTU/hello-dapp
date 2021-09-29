@@ -45,6 +45,8 @@ In this section, we aim to build a boilerplate for all your future Solidity proj
 - [Building Smart Contract Project Boilerplate (Part 2)](./boilerplate-part2.md#building-smart-contract-project-boilerplate-part-2)
   - [Testing with `waffle`](./boilerplate-part2.md#testing-with-waffle)
   - [Mocking with `smock`](./boilerplate-part2.md#mocking-with-smock)
+  - [Special testing: Moving in time](./boilerplate-part2.md#special-testing-moving-in-time)
+  - [Special testing: Mainnet Forking](./boilerplate-part2.md#special-testing-mainnet-forking)
 
 ## Resources
 
