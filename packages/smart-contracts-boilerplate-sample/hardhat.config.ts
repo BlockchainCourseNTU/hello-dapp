@@ -60,6 +60,10 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       chainId: 1337, // temporary for MetaMask support: https://github.com/MetaMask/metamask-extension/issues/10290
+      forking: {
+        url: nodeUrl('mainnet'),
+        blockNumber: 13000000, // (Aug-10-2021 09:53:39 PM +UTC) post London fork
+      },
     },
     localhost: {
       url: nodeUrl('localhost'),
@@ -84,7 +88,9 @@ const config: HardhatUserConfig = {
     strict: true,
   },
   preprocess: {
-    eachLine: removeConsoleLog((hre) => hre.network.name !== 'hardhat' && hre.network.name !== 'localhost'),
+    eachLine: removeConsoleLog(
+      (hre) => hre.network.name !== 'hardhat' && hre.network.name !== 'localhost'
+    ),
   },
 };
 

@@ -5,7 +5,10 @@ import { Greeter } from '@typechained';
 async function main() {
   const greeterDeployment = await deployments.get('Greeter');
 
-  const greeter = (await ethers.getContractAt(greeterDeployment.abi, greeterDeployment.address)) as Greeter;
+  const greeter = (await ethers.getContractAt(
+    greeterDeployment.abi,
+    greeterDeployment.address
+  )) as Greeter;
   assert((await greeter.greet()) === 'Bonjour localhost!');
 }
 
