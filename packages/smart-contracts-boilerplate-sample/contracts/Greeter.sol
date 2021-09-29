@@ -29,14 +29,18 @@ contract Greeter {
   }
 
   // extremely dangerous setter, anyone can call. demo purposes only.
-  function setDaiAddress(address daiAddr) external {
-    _dai = IERC20(daiAddr);
+  function setDaiAddress(address daiAddress) external {
+    _dai = IERC20(daiAddress);
+    console.log('Changing dai address to: ', address(_dai));
   }
 
   // donate 10 DAI to WHO to change the greeting
   function setGreetingWithDai(string memory _greeting) external {
-    require(_dai.allowance(msg.sender, address(this)) >= 10, 'approve at least 10 DAI first');
+    // console.log('invoking dai address to: ', address(_dai));
+    // require(_dai.allowance(msg.sender, address(this)) >= 10, 'approve at least 10 DAI first');
+    // console.log('allowance check passed');
     greeting = _greeting;
-    _dai.transferFrom(msg.sender, whoAddress, 10);
+    console.log('from contract: sender, recipient: ', msg.sender, whoAddress);
+    _dai.transferFrom(msg.sender, whoAddress, 1);
   }
 }
