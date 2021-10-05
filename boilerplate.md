@@ -861,10 +861,32 @@ Now you are ready for deploying to live [test|main] networks under your MetaMask
    ```
 
 2. Run
+
    ```sh
    cp .env.example .env
    ```
+
    Edit your `.env` file by filling your API tokens and wallet mnemonic.
+
+   **On wallet mnemonic:** we will be using a mnemonic wallet whose accounts are all deterministically derived from a master secret phrase (usually 12 words).
+   You can
+
+   - either directly use your MetaMask's wallet by revealing its secret seed and paste it into `.env`
+   - or run `yarn hardhat run ./scripts/generate-new-mnemonic.ts` and then go to your MetaMask and send some Ethers to the newly created wallet address (since deploying contracts require gas to pay transaction fee).
+
+   Also do remember to update the `deployer`'s address configuration in `hardhat.config.ts` to the address associated with your mnemonic wallet.
+
+   ```typescript
+   const config: HardhatUserConfig = {
+     namedAccounts: {
+       deployer: {
+         default: 0, // by default, take the first account as deployer
+         rinkeby: "0x5238A644636946963ffeDAc52Ec53fb489D3a1CD", // !!! CHANGE THIS TO YOUR ADDRESS !!!
+       },
+     },
+   };
+   ```
+
 3. Run
 
    ```sh
