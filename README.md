@@ -20,8 +20,12 @@ Since we only need the basics to kick-start our own project, going through the [
 Make a new folder to play with hardhat basics:
 
 ```sh
-# make sure you are in project root
+# First clone our repo
+git clone git@github.com:BlockchainCourseNTU/hello-dapp.git && cd hello-dapp
+
+# make sure you are in project root, then make a new package
 mkdir -p packages/hardhat-101/ && cd packages/hardhat-101/
+npm init -y
 
 # then proceed with hardhat installation: https://hardhat.org/getting-started/#installation
 ```
