@@ -58,5 +58,8 @@ In this section, we aim to build a boilerplate for all your future Solidity proj
 
 ## Contributing
 
-Current maintainers are [Alex Xiong](https://github.com/alxiong), [Gwyneth Ang](https://github.com/GwynethAXY), and [Dr. Sourav Gupta](https://github.com/sgsourav).
+Current maintainers are [Liu Ye](https://github.com/Franklinliu) and [Palina Tolmach](https://github.com/polinatolmach).
+
+Thanks for the contribution from [Alex Xiong](https://github.com/alxiong), [Gwyneth Ang](https://github.com/GwynethAXY), and [Dr. Sourav Gupta](https://github.com/sgsourav).
+
 Feel free to submit issues or PR for bugs or other requests.
