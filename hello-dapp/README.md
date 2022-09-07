@@ -1,7 +1,7 @@
 # MVP Project for Blockchain Course of NTU in AY2022-2023
 ---
 This project demonstrates a minimal viable preparation for dApp construction using Hardhat developement framework.
-It comes with a `Lock` contract, a test for that contract, and a script that deploys that contract.
+It comes with a `Lock` contract, a simple web app that can deploy contract to the blockchain and user can interact with the running contract.
 
 ### Prerequisite
 * npx. https://www.npmjs.com/package/npx
