@@ -20,7 +20,7 @@ npm install -g npx
 Step 1. clone the git repo and then install all the dependent packages.
 ```
 git clone https://github.com/BlockchainCourseNTU/hello-dapp.git
-cd  hello-dapp/packages/hello-dapp
+cd  hello-dapp/hello-dapp
 npm install
 ```
 
