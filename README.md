@@ -12,6 +12,12 @@ This is a one-stop hands-on tutorial for first-time Ethereum application develop
 - [Resources](#resources)
 - [Contributing](#contributing)
 
+## [Hello-dApp](./hello-dapp/README.md) 
+In this section, we demonstrates a minimal viable preparation for dApp construction using latest Hardhat developement framework.
+It comes with a `Lock` contract, a simple web app where user can lock some money when deploying that contract and then `withraw` when time is after the specified locking timestamp or after `unlock` operation.
+
+Detailed instruction can be checked at [README](./hello-dapp/README.md).
+
 ## Hardhat 101
 
 In this section, we aim to familiarize you with a powerful and modern development tool [`hardhat`](https://github.com/nomiclabs/hardhat).
