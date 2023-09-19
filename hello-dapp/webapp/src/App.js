@@ -38,16 +38,13 @@ class App extends React.Component {
       status: "",
       unlockTimestamp: 0,
       ether_amt: 1000000000,
-      lockAddress: "UNDEFINED",
+      lockAddress: "0x0",
       lockBalance: 0,
       wallet: undefined,
       active: false,
       date: new Date()
     };
 
-    this.handleQueryChange = this.handleQueryChange.bind(this);
-    this.handleQuery = this.handleQuery.bind(this);
-    this.handleBalance = this.handleBalance.bind(this);
     this.handleWithdraw = this.handleWithdraw.bind(this);
     this.handleUnlock = this.handleUnlock.bind(this);
     this.handleDeploy = this.handleDeploy.bind(this);
@@ -66,39 +63,20 @@ class App extends React.Component {
     this.setState({wallet: wallet})
   }
 
-  handleQueryChange = (e) => {
-    this.setState({ queryInput: e.target.value });
-  };
-
   handleEtherAmtChange = (e) =>{
     this.setState({ether_amt: e.target.value})
   };
 
   updateUnlockTimestampChange = (e) => {
-  
     this.setState({unlockTimestamp: e.target.value})
   }
 
-  handleQuery = async () => {
-    let result = await showBlance(this.state.queryInput);
-    console.log(result)
-    this.setState({
-      address: result.address
-    });
-    this.setState({
-      balance: result.balance
-    })
-  };
-
-  handleBalance = (e) => {
-    this.setState({ balance: e.target.value });
-  };
-
   handleUnlock = async () => {
     let result = await unlock();
-    await this.handleQuery();
+    // await this.handleQuery();
     if (result){
       this.setState({statusOutput: "Unlock transaction has been processed and succeeded."})
+      await this.handleConnect();
     }else{
       this.setState({statusOutput: "Unlock transaction has been processed but failed."})
     }
@@ -106,9 +84,10 @@ class App extends React.Component {
 
   handleWithdraw = async () => {
     let result = await withdraw();
-    await this.handleQuery();
+    // await this.handleQuery();
     if (result){
       this.setState({statusOutput: "Withdraw transaction has been processed and succeeded."})
+      await this.handleConnect();
     }else{
       this.setState({statusOutput: "Withdraw transaction has been processed but failed."})
     }
@@ -128,6 +107,7 @@ class App extends React.Component {
       this.setState({
         lockBalance: result.balance
       })
+      await this.handleConnect();
 
     }else{
       alert("current timestamp is too low, try to use "+ result.timestamp.toString(10)+ " +100")
@@ -136,9 +116,9 @@ class App extends React.Component {
   }
 
   handleConnect = async () => {
-    console.log("handleConnect")
+    // console.log("handleConnect")
     let result = await enableEthereumButton();
-    console.log(result)
+    // console.log(result)
     if (result){ 
       this.setState({active: true})
       let selectedAddress = result;
@@ -226,13 +206,11 @@ class App extends React.Component {
           onClick={this.handleUnlock}
           disabled = {this.state.lockAddress === "UNDEFINED"}
         />{" "}
-         {/* {
-        this.state.lockAddress !== "UNDEFINED"?
+         
         <p>
-          Status: {this.state.statusOutput}
+          {this.state.statusOutput}
         </p>
-        :""
-        } */}
+        
 
 
         {/* <hr />
