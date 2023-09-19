@@ -49,6 +49,13 @@ The website would hosted on your http://localhost:3000
 
 
 More complicated examples like election dApp can refer to https://github.com/schadokar/election-ethereum-react-dapp.git.
+As this example contains a minor issue, please correct the issue using the following commands.
+```bash
+git clone https://github.com/schadokar/election-ethereum-react-dapp.git
+cd election-ethereum-react-dapp
+cp ethereum/contracts/election.sol ethereum/contracts/Election.sol
+```
+More instructions can refer to its [README](https://github.com/schadokar/election-ethereum-react-dapp#readme).
 
 
 <!-- 
