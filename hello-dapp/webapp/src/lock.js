@@ -132,7 +132,10 @@ export const unlock = async () => {
         }, ],
       });
       return true;
-    }catch{
+    }catch (err){
+      console.log(err.message.split("RPC")[1].slice(2, -1))
+      let rpc_message = JSON.parse(err.message.split("RPC")[1].slice(2, -1))
+      window.alert(rpc_message.value.data.message)
       return false;
     }
   } else {
@@ -150,7 +153,7 @@ export const withdraw = async () => {
     const count = await web3.eth.getTransactionCount(provider.selectedAddress);
     console.log(provider.selectedAddress, "getTransactionCount:", count.toString(10))
     try{
-      await provider.request({
+      let result = await provider.request({
         method: "eth_sendTransaction",
         params: [{
           gasPrice: '766184446', // customizable by user during MetaMask confirmation.
@@ -169,7 +172,12 @@ export const withdraw = async () => {
         }, ],
       });
       return true;
-    }catch{
+    }catch (err){
+      // window.alert(JSON.stringify(err))
+      console.log(err.message.split("RPC")[1].slice(2, -1))
+      let rpc_message = JSON.parse(err.message.split("RPC")[1].slice(2, -1))
+      window.alert(rpc_message.value.data.message)
+      // window.alert(err.message)
       return false;
     }
   } else {
@@ -190,10 +198,13 @@ function isLocked() {
 }
 
 export const enableEthereumButton = async () =>{
+  console.log("enableEthereumButton")
   const provider = await detectEthereumProvider();
   if (provider) {
+      console.log("found provider", "provider.selectedAddress:"+provider.selectedAddress)
       const accounts = await provider.request({ method: 'eth_requestAccounts' });
       console.log(accounts);
+      return provider.selectedAddress;
   }else{
       console.log("Please install MetaMask!");
   }

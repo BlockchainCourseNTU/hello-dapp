@@ -20,8 +20,10 @@ contract Lock {
         owner = payable(msg.sender);
     }
     function unlock() public{
-        unlockTime = block.timestamp;
+        require(msg.sender == owner, "You aren't the owner");
+        unlockTime = block.timestamp;  
     }
+    
     function withdraw() public {
         // Uncomment this line to print a log in your terminal
         // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
