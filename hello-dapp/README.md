@@ -48,6 +48,7 @@ npm run start
 The website would hosted on your http://localhost:3000
 
 
+### Other Educational Examples
 More complicated examples like election dApp can refer to https://github.com/schadokar/election-ethereum-react-dapp.git.
 As this example contains a minor issue, please correct the issue using the following commands.
 ```bash
