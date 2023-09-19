@@ -8,7 +8,7 @@ It comes with a `Lock` contract, a simple web app that can deploy contract to th
 * nodejs. https://nodejs.org/en/download/package-manager/
 * npm.  https://nodejs.org/en/download/package-manager/
 * Chrome browser.
-* MetaMask wallet. https://chrome.google.com/webstore/category/extensions -> search "metamask", then add the extension to your chrome browser
+* MetaMask wallet. https://chrome.google.com/webstore/category/extensions -> search "metamask", then add the extension to your chrome browser.
 The tested setup on Ubuntu 20.04 LTS is:
 ```
 apt install -y nodejs npm 
@@ -47,6 +47,8 @@ npm run start
 ```
 The website would hosted on your http://localhost:3000
 
+
+More complicated examples like election dApp can refer to https://github.com/schadokar/election-ethereum-react-dapp.git.
 
 
 <!-- 
